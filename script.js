@@ -37,8 +37,11 @@ class WeatherWidget {
             // Show/hide neon glow color picker
             neonGlowSection.classList.toggle('visible', animation === 'neon');
             
+            // Remove all sparkle elements first
+            widget.querySelectorAll('.sparkle').forEach(el => el.remove());
+            
             // Remove all animation classes and styles
-            const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse'];
+            const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse', 'text-sparkle'];
             textElements.forEach(element => {
                 element.classList.remove(...animationClasses);
                 element.style.textShadow = 'none'; // Explicitly remove text shadow
@@ -55,6 +58,35 @@ class WeatherWidget {
                         element.style.backgroundImage = 'linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
                         element.style.webkitBackgroundClip = 'text';
                         element.style.backgroundClip = 'text';
+                    }
+                    if (animation === 'sparkle') {
+                        // Add sparkles
+                        const sparkle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                        sparkle.setAttribute('viewBox', '0 0 24 24');
+                        sparkle.setAttribute('class', 'sparkle');
+                        sparkle.innerHTML = '<path class="sparkle-path" d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41z"/>';
+                        
+                        // Add 5 sparkles with mixed pastel colors at fixed positions
+                        const positions = [
+                            { top: '5%', left: '5%', color: '#FFB5E8', delay: '0s' },     // Pastel pink
+                            { top: '5%', right: '5%', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
+                            { top: '5%', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
+                            { top: '5%', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
+                            { top: '5%', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
+                        ];
+                        
+                        positions.forEach(pos => {
+                            const sparkleClone = sparkle.cloneNode(true);
+                            sparkleClone.style.fill = pos.color;
+                            sparkleClone.querySelector('.sparkle-path').style.fill = pos.color;
+                            sparkleClone.style.animationDelay = pos.delay;
+                            Object.entries(pos).forEach(([key, value]) => {
+                                if (key !== 'color' && key !== 'delay') {
+                                    sparkleClone.style[key] = value;
+                                }
+                            });
+                            element.appendChild(sparkleClone);
+                        });
                     }
                 }
             });
@@ -443,7 +475,10 @@ class WeatherWidget {
 
         // Apply text color and animations
         const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
-        const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse'];
+        const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse', 'text-sparkle'];
+        
+        // Remove all sparkle elements first
+        widget.querySelectorAll('.sparkle').forEach(el => el.remove());
         
         textElements.forEach(element => {
             // First remove all animation classes and styles
@@ -467,6 +502,35 @@ class WeatherWidget {
                 }
                 if (textAnimation === 'neon') {
                     widget.style.setProperty('--neon-glow-color', neonGlowColor);
+                }
+                if (textAnimation === 'sparkle') {
+                    // Add sparkles
+                    const sparkle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                    sparkle.setAttribute('viewBox', '0 0 24 24');
+                    sparkle.setAttribute('class', 'sparkle');
+                    sparkle.innerHTML = '<path class="sparkle-path" d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41z"/>';
+                    
+                    // Add 5 sparkles with mixed pastel colors at fixed positions
+                    const positions = [
+                        { top: '5%', left: '5%', color: '#FFB5E8', delay: '0s' },     // Pastel pink
+                        { top: '5%', right: '5%', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
+                        { top: '5%', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
+                        { top: '5%', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
+                        { top: '5%', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
+                    ];
+                    
+                    positions.forEach(pos => {
+                        const sparkleClone = sparkle.cloneNode(true);
+                        sparkleClone.style.fill = pos.color;
+                        sparkleClone.querySelector('.sparkle-path').style.fill = pos.color;
+                        sparkleClone.style.animationDelay = pos.delay;
+                        Object.entries(pos).forEach(([key, value]) => {
+                            if (key !== 'color' && key !== 'delay') {
+                                sparkleClone.style[key] = value;
+                            }
+                        });
+                        element.appendChild(sparkleClone);
+                    });
                 }
             }
         });
