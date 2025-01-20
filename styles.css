@@ -100,16 +100,50 @@ body[data-embed="true"] .embed-section {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    width: 100%;
+    position: relative;
 }
 
 .location {
     display: flex;
     align-items: center;
     gap: 5px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: none !important;
+}
+
+#location-name {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+    transform: none !important;
+}
+
+/* Update animation styles to prevent position shifting */
+.text-sparkle#location-name,
+.text-pulse#location-name {
+    position: relative !important;
+    display: inline-block !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+}
+
+.text-sparkle.location,
+.text-pulse.location {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: none !important;
 }
 
 .weather-body {
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .weather-animation {
@@ -117,23 +151,113 @@ body[data-embed="true"] .embed-section {
     height: 150px;
     margin: 0 auto;
     position: relative;
+    order: 1;
 }
 
 .temperature {
     font-size: 3em;
     font-weight: bold;
     margin: 10px 0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transform-origin: center center;
+    order: 2;
+}
+
+#temperature {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unit {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 0.1em;
+}
+
+/* Prevent content after unit */
+.unit::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Ensure no content appears after the unit for any animation type */
+.text-sparkle .unit::after,
+.text-pulse .unit::after,
+.text-rainbow .unit::after,
+.text-neon .unit::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Remove any decorative elements from unit */
+.unit {
+    border: none !important;
+    text-decoration: none !important;
+}
+
+/* Remove any decorative elements */
+.temperature *,
+#temperature *,
+.unit * {
+    text-decoration: none !important;
+    border: none !important;
+    line-height: 1;
+}
+
+/* Remove any generated content */
+.temperature::before,
+.temperature::after,
+.temperature *::before,
+.temperature *::after,
+#temperature::before,
+#temperature::after,
+.unit::before,
+.unit::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Ensure no borders or underlines for any animation type */
+.text-sparkle.temperature,
+.text-pulse.temperature,
+.text-rainbow.temperature,
+.text-neon.temperature,
+.text-sparkle #temperature,
+.text-pulse #temperature,
+.text-rainbow #temperature,
+.text-neon #temperature,
+.text-sparkle .unit,
+.text-pulse .unit,
+.text-rainbow .unit,
+.text-neon .unit {
+    border: none !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    border-top: none !important;
+    line-height: 1;
+}
+
+/* Ensure proper spacing between temperature and unit */
+.temperature #temperature + .unit {
+    margin-left: 0.1em;
 }
 
 .weather-description {
     font-size: 1.2em;
     margin-bottom: 15px;
+    order: 3;
 }
 
 .weather-details {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
+    width: 100%;
+    order: 4;
 }
 
 .detail {
@@ -331,14 +455,17 @@ input[type="color"] {
 
 .text-pulse {
     animation: pulse 1.5s ease-in-out infinite;
-    display: inline-block;
-    transform-origin: center;
+    display: inline-flex !important;
+    transform-origin: center center;
+    position: relative;
+    will-change: transform;
 }
 
 .text-sparkle {
     position: relative;
-    display: inline-block;
+    display: inline-flex !important;
     overflow: visible;
+    transform: none !important;
 }
 
 .sparkle {
@@ -349,9 +476,20 @@ input[type="color"] {
     fill: currentColor;
     animation: sparkle-twinkle 2s ease-in-out infinite;
     z-index: 1;
-    color-scheme: light !important;
+    transform-origin: center center;
     forced-color-adjust: none;
 }
+
+/* Adjust sparkle positions for temperature */
+.temperature .sparkle {
+    position: absolute;
+}
+
+.temperature .sparkle:nth-child(1) { top: -10px; left: -10px; }
+.temperature .sparkle:nth-child(2) { top: -10px; right: -10px; }
+.temperature .sparkle:nth-child(3) { top: -10px; left: 25%; }
+.temperature .sparkle:nth-child(4) { top: -10px; right: 25%; }
+.temperature .sparkle:nth-child(5) { top: -10px; left: 45%; }
 
 @keyframes sparkle-twinkle {
     0% { 
@@ -438,4 +576,58 @@ input[type="color"] {
 
 #neon-glow-section .color-picker {
     margin-bottom: 0;
+}
+
+/* Remove any generated content around temperature */
+.temperature::before,
+.temperature::after,
+.temperature *::before,
+.temperature *::after,
+#temperature::before,
+#temperature::after,
+.unit::before,
+.unit::after,
+.text-sparkle.temperature::before,
+.text-sparkle.temperature::after,
+.text-pulse.temperature::before,
+.text-pulse.temperature::after,
+.text-rainbow.temperature::before,
+.text-rainbow.temperature::after,
+.text-neon.temperature::before,
+.text-neon.temperature::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Remove dashes for all animation types */
+.text-sparkle.temperature::after,
+.text-pulse.temperature::after,
+.text-rainbow.temperature::after,
+.text-neon.temperature::after,
+.text-sparkle .unit::after,
+.text-pulse .unit::after,
+.text-rainbow .unit::after,
+.text-neon .unit::after {
+    content: none !important;
+    display: none !important;
+}
+
+/* Ensure no borders or underlines for any animation type */
+.text-sparkle.temperature,
+.text-pulse.temperature,
+.text-rainbow.temperature,
+.text-neon.temperature,
+.text-sparkle #temperature,
+.text-pulse #temperature,
+.text-rainbow #temperature,
+.text-neon #temperature,
+.text-sparkle .unit,
+.text-pulse .unit,
+.text-rainbow .unit,
+.text-neon .unit {
+    border: none !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    border-top: none !important;
+    line-height: 1;
 } 

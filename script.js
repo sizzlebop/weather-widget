@@ -68,11 +68,11 @@ class WeatherWidget {
                         
                         // Add 5 sparkles with mixed pastel colors at fixed positions
                         const positions = [
-                            { top: '5%', left: '5%', color: '#FFB5E8', delay: '0s' },     // Pastel pink
-                            { top: '5%', right: '5%', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
-                            { top: '5%', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
-                            { top: '5%', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
-                            { top: '5%', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
+                            { top: '-10px', left: '-10px', color: '#FFB5E8', delay: '0s' },     // Pastel pink
+                            { top: '-10px', right: '-10px', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
+                            { top: '-10px', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
+                            { top: '-10px', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
+                            { top: '-10px', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
                         ];
                         
                         positions.forEach(pos => {
@@ -512,11 +512,11 @@ class WeatherWidget {
                     
                     // Add 5 sparkles with mixed pastel colors at fixed positions
                     const positions = [
-                        { top: '5%', left: '5%', color: '#FFB5E8', delay: '0s' },     // Pastel pink
-                        { top: '5%', right: '5%', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
-                        { top: '5%', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
-                        { top: '5%', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
-                        { top: '5%', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
+                        { top: '-10px', left: '-10px', color: '#FFB5E8', delay: '0s' },     // Pastel pink
+                        { top: '-10px', right: '-10px', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
+                        { top: '-10px', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
+                        { top: '-10px', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
+                        { top: '-10px', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
                     ];
                     
                     positions.forEach(pos => {
