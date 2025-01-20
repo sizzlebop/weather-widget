@@ -362,7 +362,9 @@ class WeatherWidget {
         // Apply text color
         const textElements = widget.querySelectorAll('span, div:not(.weather-animation), i');
         textElements.forEach(element => {
-            element.style.color = customization.theme === 'custom' ? customization.textColor : '#ffffff';
+            if (!element.classList.contains('text-rainbow')) {
+                element.style.color = textColor;
+            }
         });
 
         // Remove previous text animations
@@ -432,14 +434,17 @@ class WeatherWidget {
         
         colorInputs.forEach(id => {
             document.getElementById(id).addEventListener('input', (e) => {
-                if (document.getElementById('theme-select').value === 'custom') {
-                    if (id === 'text-color') {
-                        widget.style.color = e.target.value;
-                    } else {
-                        const start = document.getElementById('bg-color-start').value;
-                        const end = document.getElementById('bg-color-end').value;
-                        widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
-                    }
+                if (id === 'text-color') {
+                    const textElements = widget.querySelectorAll('span, div:not(.weather-animation), i');
+                    textElements.forEach(element => {
+                        if (!element.classList.contains('text-rainbow')) {
+                            element.style.color = e.target.value;
+                        }
+                    });
+                } else if (document.getElementById('theme-select').value === 'custom') {
+                    const start = document.getElementById('bg-color-start').value;
+                    const end = document.getElementById('bg-color-end').value;
+                    widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
                 }
             });
         });
@@ -447,17 +452,35 @@ class WeatherWidget {
         // Add theme select change handler
         document.getElementById('theme-select').addEventListener('change', (e) => {
             const customColors = document.getElementById('custom-colors');
+            const widget = document.getElementById('weather-widget');
+            
             if (e.target.value === 'custom') {
                 customColors.style.display = 'block';
+                const start = document.getElementById('bg-color-start').value;
+                const end = document.getElementById('bg-color-end').value;
+                widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
             } else {
-                customColors.style.display = 'none';
-                if (e.target.value === 'dark') {
-                    widget.style.background = 'linear-gradient(135deg, #2c3e50, #3498db)';
-                } else {
-                    widget.style.background = 'linear-gradient(135deg, #6e8efb, #a777e3)';
-                }
-                widget.style.color = '#ffffff';
+                customColors.style.display = 'block';
+                const gradients = {
+                    light: ['#6e8efb', '#a777e3'],
+                    dark: ['#2c3e50', '#3498db'],
+                    sunset: ['#ff6b6b', '#feca57'],
+                    ocean: ['#00b894', '#0984e3'],
+                    forest: ['#55efc4', '#00b894'],
+                    aurora: ['#6c5ce7', '#00b894'],
+                    cosmic: ['#6c5ce7', '#fd79a8']
+                };
+                const [startColor, endColor] = gradients[e.target.value];
+                widget.style.background = `linear-gradient(135deg, ${startColor}, ${endColor})`;
             }
+            
+            // Update text color for all elements
+            const textElements = widget.querySelectorAll('span, div:not(.weather-animation), i');
+            textElements.forEach(element => {
+                if (!element.classList.contains('text-rainbow')) {
+                    element.style.color = document.getElementById('text-color').value;
+                }
+            });
         });
     }
 }

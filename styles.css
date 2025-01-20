@@ -243,27 +243,6 @@ input[type="color"] {
     width: 100%;
 }
 
-/* Theme Gradients */
-.theme-sunset {
-    background: linear-gradient(135deg, #ff6b6b, #feca57) !important;
-}
-
-.theme-ocean {
-    background: linear-gradient(135deg, #00b894, #0984e3) !important;
-}
-
-.theme-forest {
-    background: linear-gradient(135deg, #55efc4, #00b894) !important;
-}
-
-.theme-aurora {
-    background: linear-gradient(135deg, #6c5ce7, #00b894) !important;
-}
-
-.theme-cosmic {
-    background: linear-gradient(135deg, #6c5ce7, #fd79a8) !important;
-}
-
 /* Text Animations */
 .text-neon {
     text-shadow: 0 0 5px #fff,
@@ -282,6 +261,7 @@ input[type="color"] {
     color: transparent !important;
     animation: rainbow 4s linear infinite;
     background-size: 200% auto;
+    text-shadow: none !important;
 }
 
 .text-pulse {
@@ -362,4 +342,9 @@ input[type="color"] {
     60% { transform: translate(-2px, 2px); }
     80% { transform: translate(-2px, -2px); }
     100% { transform: translate(0); }
+}
+
+/* Ensure color picker is always visible */
+#custom-colors {
+    display: block !important;
 } 
