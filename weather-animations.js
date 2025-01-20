@@ -82,23 +82,46 @@ class WeatherAnimations {
     }
 
     createCloudyAnimation() {
-        const cloud = document.createElement('div');
-        cloud.style.cssText = `
-            width: 80px;
-            height: 30px;
-            background: #FFFFFF !important;
-            background-color: #FFFFFF !important;
-            border-radius: 20px;
+        const cloudContainer = document.createElement('div');
+        cloudContainer.style.cssText = `
+            width: 100px;
+            height: 60px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             animation: float 3s infinite ease-in-out;
             z-index: 2;
-            color-scheme: light !important;
-            forced-color-adjust: none;
-            box-shadow: 0 0 15px #FFFFFF !important;
         `;
+
+        // Create multiple cloud circles for fluffy appearance
+        const cloudParts = [
+            { top: '50%', left: '50%', size: '50px' },  // Main center
+            { top: '30%', left: '30%', size: '40px' },  // Top left
+            { top: '30%', left: '60%', size: '45px' },  // Top right
+            { top: '50%', left: '20%', size: '35px' },  // Bottom left
+            { top: '50%', left: '70%', size: '40px' },  // Bottom right
+        ];
+
+        cloudParts.forEach(part => {
+            const circle = document.createElement('div');
+            circle.style.cssText = `
+                width: ${part.size};
+                height: ${part.size};
+                background: #FFFFFF !important;
+                background-color: #FFFFFF !important;
+                border-radius: 50%;
+                position: absolute;
+                top: ${part.top};
+                left: ${part.left};
+                transform: translate(-50%, -50%);
+                z-index: 2;
+                color-scheme: light !important;
+                forced-color-adjust: none;
+                box-shadow: 0 0 15px #FFFFFF !important;
+            `;
+            cloudContainer.appendChild(circle);
+        });
 
         const keyframes = document.createElement('style');
         keyframes.textContent = `
@@ -110,7 +133,7 @@ class WeatherAnimations {
         `;
 
         document.head.appendChild(keyframes);
-        this.container.appendChild(cloud);
+        this.container.appendChild(cloudContainer);
     }
 
     createSnowAnimation() {
