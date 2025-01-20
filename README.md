@@ -18,7 +18,7 @@
 
 A beautiful, customizable weather widget that you can embed anywhere. Perfect for websites, blogs, and Notion pages.
 
-![Weather Widget Preview](https://res.cloudinary.com/di7ctlowx/image/upload/v1737380828/weather-widget_kybydv.png)
+<img src="https://res.cloudinary.com/di7ctlowx/image/upload/v1737382121/weather-widget_oailnt.png" alt="Weather Widget Preview" width="800" />
 
 ## ✨ Features
 
