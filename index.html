@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Widget</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div id="weather-widget" class="weather-widget">
+            <div class="weather-content">
+                <div class="weather-header">
+                    <div class="location">
+                        <i class="material-icons">location_on</i>
+                        <span id="location-name">Enter Location</span>
+                    </div>
+                    <div class="settings-icon">
+                        <i class="material-icons" id="settings-toggle">settings</i>
+                    </div>
+                </div>
+                <div class="weather-body">
+                    <div class="weather-animation" id="weather-animation"></div>
+                    <div class="temperature">
+                        <span id="temperature">--</span>
+                        <span class="unit">°C</span>
+                    </div>
+                    <div class="weather-description" id="weather-description">--</div>
+                    <div class="weather-details">
+                        <div class="detail">
+                            <i class="material-icons">water_drop</i>
+                            <span id="humidity">--%</span>
+                        </div>
+                        <div class="detail">
+                            <i class="material-icons">air</i>
+                            <span id="wind">-- m/s</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="location-input">
+                <div class="input-group">
+                    <select id="location-type">
+                        <option value="zip">Zip/Postal Code</option>
+                        <option value="coords">Coordinates</option>
+                    </select>
+                    <div id="zip-input" class="input-fields">
+                        <input type="text" id="zip-code" placeholder="Enter Zip/Postal Code">
+                        <select id="country-code">
+                            <option value="US">United States</option>
+                            <option value="GB">United Kingdom</option>
+                            <option value="CA">Canada</option>
+                            <!-- Add more countries as needed -->
+                        </select>
+                    </div>
+                    <div id="coords-input" class="input-fields hidden">
+                        <input type="number" id="latitude" placeholder="Latitude">
+                        <input type="number" id="longitude" placeholder="Longitude">
+                    </div>
+                    <button id="get-weather">Get Weather</button>
+                </div>
+            </div>
+
+            <div class="embed-buttons">
+                <button id="show-embed-code">Embed Code</button>
+                <button id="show-notion-link">Notion Link</button>
+            </div>
+
+            <div id="embed-preview" class="preview-panel hidden">
+                <div class="preview-content">
+                    <pre><code id="embed-code"></code></pre>
+                    <button id="copy-embed">Copy Code</button>
+                </div>
+            </div>
+
+            <div id="notion-preview" class="preview-panel hidden">
+                <div class="preview-content">
+                    <input type="text" id="notion-link" readonly>
+                    <button id="copy-notion">Copy Link</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="customization-panel" class="customization-panel hidden">
+            <h3>Customize Widget</h3>
+            <div class="customization-section">
+                <h4>Theme</h4>
+                <select id="theme-select">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+
+            <div class="customization-section" id="custom-colors">
+                <h4>Custom Colors</h4>
+                <div class="color-picker">
+                    <label>Background Start:</label>
+                    <input type="color" id="bg-color-start">
+                </div>
+                <div class="color-picker">
+                    <label>Background End:</label>
+                    <input type="color" id="bg-color-end">
+                </div>
+                <div class="color-picker">
+                    <label>Text Color:</label>
+                    <input type="color" id="text-color">
+                </div>
+            </div>
+
+            <div class="customization-section">
+                <h4>Font</h4>
+                <select id="font-select">
+                    <option value="Roboto">Roboto</option>
+                    <option value="Arial">Arial</option>
+                    <option value="Helvetica">Helvetica</option>
+                    <option value="Open Sans">Open Sans</option>
+                </select>
+            </div>
+
+            <div class="customization-section">
+                <h4>Size</h4>
+                <select id="size-select">
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
+            </div>
+
+            <div class="customization-section">
+                <h4>Temperature Unit</h4>
+                <select id="unit-select">
+                    <option value="celsius">Celsius</option>
+                    <option value="fahrenheit">Fahrenheit</option>
+                </select>
+            </div>
+
+            <button id="apply-customization">Apply Changes</button>
+        </div>
+    </div>
+    <script src="weather-animations.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 

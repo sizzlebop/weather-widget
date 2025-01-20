@@ -1,0 +1,1 @@
+openweather api key: 805b142aaa4b0305c991f291c921bfa4

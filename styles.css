@@ -1,0 +1,202 @@
+:root {
+    --primary-bg: linear-gradient(135deg, #6e8efb, #a777e3);
+    --text-color: #ffffff;
+    --font-family: 'Roboto', sans-serif;
+    --widget-width: 300px;
+    --widget-padding: 20px;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: var(--font-family);
+    background-color: #f0f2f5;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.weather-widget {
+    width: var(--widget-width);
+    background: var(--primary-bg);
+    border-radius: 15px;
+    padding: var(--widget-padding);
+    color: var(--text-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.location {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.weather-body {
+    text-align: center;
+}
+
+.weather-animation {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.temperature {
+    font-size: 3em;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.weather-description {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.weather-details {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.detail {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.location-input {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input-fields {
+    display: flex;
+    gap: 10px;
+}
+
+.input-fields input,
+.input-fields select {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.hidden {
+    display: none !important;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 1);
+}
+
+.embed-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.preview-panel {
+    margin-top: 15px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.preview-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.preview-content pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.customization-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.customization-section {
+    margin-bottom: 20px;
+}
+
+.customization-section h4 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.color-picker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.color-picker label {
+    flex: 1;
+    color: #333;
+}
+
+select, input[type="color"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: white;
+}
+
+input[type="color"] {
+    height: 40px;
+    padding: 2px;
+}
+
+#apply-customization {
+    width: 100%;
+    background: #6e8efb;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+
+#apply-customization:hover {
+    background: #5d7de9;
+} 
