@@ -1,57 +1,99 @@
 # 🌦️ Weather Widget
 
-A sleek, animated weather widget with real-time conditions. Features beautiful weather animations, Notion compatibility, and easy embedding for any website. Powered by OpenWeather API. ☀️🌧️❄️
+A beautiful, customizable weather widget that you can embed anywhere. Perfect for websites, blogs, and Notion pages.
 
 ## ✨ Features
 
-- Real-time weather data from OpenWeather API
-- Beautiful weather animations for different conditions
-- Responsive design
-- Easy to embed in any website
-- Notion-compatible - embed directly in your Notion pages
-- Automatic location detection (with user permission)
-- Manual location search capability
+- 🎨 Multiple themes and customization options
+- 📱 Responsive design with different size options
+- 🌡️ Temperature in Celsius or Fahrenheit
+- 💅 Custom fonts and colors
+- 🔌 Easy embedding functionality
+- 🎬 Smooth weather animations
+- 📍 Location support via ZIP code or coordinates
 
-## 🚀 Setup
+## 🚀 Getting Started
 
-1. Clone this repository:
+### Prerequisites
 
-```bash
-git clone https://github.com/yourusername/weather-widget.git
-cd weather-widget
-```
+- An OpenWeather API key (free tier available)
+- A modern web browser
 
-2. Obtain an OpenWeather API Key:
+### 📝 Getting Your OpenWeather API Key
 
-   - Visit [OpenWeather](https://openweathermap.org/)
-   - Click "Sign Up" and create a free account
-   - After signing in, go to your profile and select "My API Keys" to see your key.
+1. Visit [OpenWeather](https://openweathermap.org/api)
+2. Click "Sign Up" and create a free account
+3. After verification, go to your account dashboard
+4. Navigate to "API Keys" section
+5. Copy your API key
 
-## 🔌 Embedding the Widget
+> ⚠️ Note: New API keys may take a few hours to activate
 
-To embed the weather widget in your website:
+## 🛠️ Usage
 
-1. Click the "Embed Code" or "Embed Link" button in the widget interface
-2. Copy the generated code
-3. Paste the code into your website where you want the widget to appear
+1. Enter your OpenWeather API key in the settings panel
+2. Choose your location method:
+   - ZIP/Postal Code + Country
+   - Coordinates (latitude & longitude)
+3. Click "Get Weather" to fetch current conditions
+4. Customize the widget appearance:
+   - Choose from preset themes
+   - Set custom colors
+   - Select font family
+   - Adjust widget size
+   - Choose temperature unit
 
-For Notion users:
+## 🔗 Embedding
 
-1. Click the "Embed Link" button in the widget interface
-2. Copy the generated link
-3. In Notion, create an "Embed" block and paste the link
-4. The weather widget will appear directly in your Notion page!
+### Website Embedding
 
-That's it! The widget will automatically load with all necessary scripts and styles.
+1. Click the "Embed Code" button
+2. Copy the generated HTML code
+3. Paste it into your website's HTML
 
-## 🔒 API Key Security
+### Notion Embedding
 
-⚠️ Important: The OpenWeather API key should be kept secure. In a production environment:
+1. Click the "Embed Link" button
+2. Copy the generated URL
+3. In Notion:
+   - Type `/embed`
+   - Paste the URL
+   - Press Enter
 
-- Use environment variables
-- Implement the API calls on your backend
-- Add appropriate CORS policies
-- Never expose the API key in client-side code
+## 🎨 Available Themes
+
+- Light
+- Dark
+- Sunset
+- Ocean
+- Forest
+- Aurora
+- Cosmic
+- Cherry
+- Custom
+
+## 📐 Size Options
+
+- Small (250x300px)
+- Medium (300x350px)
+- Large (350x400px)
+
+## 🔤 Supported Fonts
+
+- Roboto
+- Lato
+- Montserrat
+- Open Sans
+- Poppins
+- Raleway
+- Ubuntu
+- Source Sans Pro
+- Nunito
+- Quicksand
+- Dancing Script
+- Lobster
+- Livvic
+- Inter
 
 ## 🌐 Browser Support
 
@@ -60,18 +102,45 @@ That's it! The widget will automatically load with all necessary scripts and sty
 - Safari (latest)
 - Edge (latest)
 
-## 📜 License
+## 🔒 Privacy
 
-MIT License - feel free to use this in your projects!
+The widget only collects weather data for the specified location. No personal data is stored or transmitted beyond what's necessary for weather functionality.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 💬 Support
+## ⚡ Performance
 
-If you encounter any issues or have questions, please open an issue in the repository.
+The widget is lightweight and optimized for performance:
+
+- Minimal dependencies
+- Efficient animations
+- Lazy loading of weather data
+- Caching of API responses
+
+## 🐛 Troubleshooting
+
+**Widget shows "Enter Location"**
+
+- Verify your API key is correct
+- Check your location input
+- Ensure your API key is activated
+
+**Animations not showing**
+
+- Check if JavaScript is enabled
+- Verify browser compatibility
+- Clear browser cache
+
+## 📧 Support
+
+For support, please open an issue in the GitHub repository or contact the maintainers.
+
+---
+
+Made with ❤️ by pinkpixel
