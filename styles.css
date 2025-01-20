@@ -76,10 +76,11 @@ body[data-embed="true"] .container {
 .weather-widget {
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     border-radius: 20px;
-    padding: 25px;
+    padding: var(--widget-padding);
     width: var(--widget-width);
     box-sizing: border-box;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 /* Adjust widget in embed mode */
@@ -119,24 +120,7 @@ body[data-embed="true"] .embed-section {
     position: relative;
     text-align: left;
     transform: none !important;
-}
 
-/* Update animation styles to prevent position shifting */
-.text-sparkle#location-name,
-.text-pulse#location-name {
-    position: relative !important;
-    display: inline-block !important;
-    left: auto !important;
-    top: auto !important;
-    transform: none !important;
-}
-
-.text-sparkle.location,
-.text-pulse.location {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    transform: none !important;
 }
 
 .weather-body {
@@ -184,21 +168,6 @@ body[data-embed="true"] .embed-section {
     content: none !important;
 }
 
-/* Ensure no content appears after the unit for any animation type */
-.text-sparkle .unit::after,
-.text-pulse .unit::after,
-.text-rainbow .unit::after,
-.text-neon .unit::after {
-    display: none !important;
-    content: none !important;
-}
-
-/* Remove any decorative elements from unit */
-.unit {
-    border: none !important;
-    text-decoration: none !important;
-}
-
 /* Remove any decorative elements */
 .temperature *,
 #temperature *,
@@ -221,19 +190,10 @@ body[data-embed="true"] .embed-section {
     display: none !important;
 }
 
-/* Ensure no borders or underlines for any animation type */
-.text-sparkle.temperature,
-.text-pulse.temperature,
-.text-rainbow.temperature,
-.text-neon.temperature,
-.text-sparkle #temperature,
-.text-pulse #temperature,
-.text-rainbow #temperature,
-.text-neon #temperature,
-.text-sparkle .unit,
-.text-pulse .unit,
-.text-rainbow .unit,
-.text-neon .unit {
+/* Remove any borders or underlines */
+.temperature,
+#temperature,
+.unit {
     border: none !important;
     text-decoration: none !important;
     border-bottom: none !important;
@@ -431,122 +391,6 @@ input[type="color"] {
     width: 100%;
 }
 
-/* Text Animations */
-.text-neon {
-    text-shadow: 0 0 3px var(--neon-glow-color),
-                0 0 6px var(--neon-glow-color),
-                0 0 12px currentColor,
-                0 0 18px currentColor,
-                0 0 24px currentColor !important;
-    animation: neon 1.5s ease-in-out infinite alternate;
-}
-
-.text-rainbow {
-    background-image: linear-gradient(90deg, 
-        #ff0000, #ffa500, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent !important;
-    -webkit-text-fill-color: transparent;
-    animation: rainbow 4s linear infinite;
-    background-size: 200% auto;
-    text-shadow: none !important;
-}
-
-.text-pulse {
-    animation: pulse 1.5s ease-in-out infinite;
-    display: inline-flex !important;
-    transform-origin: center center;
-    position: relative;
-    will-change: transform;
-}
-
-.text-sparkle {
-    position: relative;
-    display: inline-flex !important;
-    overflow: visible;
-    transform: none !important;
-}
-
-.sparkle {
-    position: absolute;
-    pointer-events: none;
-    width: 12px;
-    height: 12px;
-    fill: currentColor;
-    animation: sparkle-twinkle 2s ease-in-out infinite;
-    z-index: 1;
-    transform-origin: center center;
-    forced-color-adjust: none;
-}
-
-/* Adjust sparkle positions for temperature */
-.temperature .sparkle {
-    position: absolute;
-}
-
-.temperature .sparkle:nth-child(1) { top: -10px; left: -10px; }
-.temperature .sparkle:nth-child(2) { top: -10px; right: -10px; }
-.temperature .sparkle:nth-child(3) { top: -10px; left: 25%; }
-.temperature .sparkle:nth-child(4) { top: -10px; right: 25%; }
-.temperature .sparkle:nth-child(5) { top: -10px; left: 45%; }
-
-@keyframes sparkle-twinkle {
-    0% { 
-        opacity: 0;
-        transform: rotate(0deg) scale(0.3);
-    }
-    50% { 
-        opacity: 1;
-        transform: rotate(180deg) scale(1);
-    }
-    100% { 
-        opacity: 0;
-        transform: rotate(360deg) scale(0.3);
-    }
-}
-
-/* Sparkle SVG path */
-.sparkle-path {
-    fill: inherit;
-    color-scheme: light !important;
-    forced-color-adjust: none;
-}
-
-/* Keyframes */
-@keyframes neon {
-    from {
-        text-shadow: 0 0 3px var(--neon-glow-color),
-                    0 0 6px var(--neon-glow-color),
-                    0 0 12px currentColor,
-                    0 0 18px currentColor,
-                    0 0 24px currentColor;
-    }
-    to {
-        text-shadow: 0 0 2px var(--neon-glow-color),
-                    0 0 4px var(--neon-glow-color),
-                    0 0 8px currentColor,
-                    0 0 14px currentColor,
-                    0 0 20px currentColor;
-    }
-}
-
-@keyframes rainbow {
-    0% { background-position: 0% center; }
-    100% { background-position: -200% center; }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-    100% { transform: scale(1); }
-}
-
-/* Remove the rule that forces custom colors to always be visible */
-#custom-colors {
-    display: none;
-}
-
 .material-icons {
     font-family: 'Material Icons' !important;
     font-weight: normal;
@@ -556,7 +400,6 @@ input[type="color"] {
     letter-spacing: normal;
     text-transform: none;
     display: inline-block;
-    white-space: nowrap;
     word-wrap: normal;
     direction: ltr;
     -webkit-font-smoothing: antialiased;
@@ -586,17 +429,14 @@ input[type="color"] {
 #temperature::before,
 #temperature::after,
 .unit::before,
-.unit::after,
-.text-sparkle.temperature::before,
-.text-sparkle.temperature::after,
-.text-pulse.temperature::before,
-.text-pulse.temperature::after,
-.text-rainbow.temperature::before,
-.text-rainbow.temperature::after,
-.text-neon.temperature::before,
-.text-neon.temperature::after {
+.unit::after {
     content: none !important;
     display: none !important;
+}
+
+/* Remove the rule that forces custom colors to always be visible */
+#custom-colors {
+    display: none;
 }
 
 /* Remove dashes for all animation types */

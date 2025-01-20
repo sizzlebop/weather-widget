@@ -27,80 +27,6 @@ class WeatherWidget {
             }
         });
 
-        // Text animation change
-        document.getElementById('text-animation').addEventListener('change', (e) => {
-            const animation = e.target.value;
-            const widget = document.getElementById('weather-widget');
-            const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
-            const neonGlowSection = document.getElementById('neon-glow-section');
-            
-            // Show/hide neon glow color picker
-            neonGlowSection.classList.toggle('visible', animation === 'neon');
-            
-            // Remove all sparkle elements first
-            widget.querySelectorAll('.sparkle').forEach(el => el.remove());
-            
-            // Remove all animation classes and styles
-            const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse', 'text-sparkle'];
-            textElements.forEach(element => {
-                element.classList.remove(...animationClasses);
-                element.style.textShadow = 'none'; // Explicitly remove text shadow
-                element.style.color = document.getElementById('text-color').value; // Reset to current text color
-                element.style.webkitTextFillColor = document.getElementById('text-color').value;
-                element.style.backgroundImage = 'none';
-                element.style.webkitBackgroundClip = 'unset';
-                element.style.backgroundClip = 'unset';
-                
-                if (animation !== 'none') {
-                    element.classList.add(`text-${animation}`);
-                    if (animation === 'rainbow') {
-                        element.style.webkitTextFillColor = 'transparent';
-                        element.style.backgroundImage = 'linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
-                        element.style.webkitBackgroundClip = 'text';
-                        element.style.backgroundClip = 'text';
-                    }
-                    if (animation === 'sparkle') {
-                        // Add sparkles
-                        const sparkle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                        sparkle.setAttribute('viewBox', '0 0 24 24');
-                        sparkle.setAttribute('class', 'sparkle');
-                        sparkle.innerHTML = '<path class="sparkle-path" d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41z"/>';
-                        
-                        // Add 5 sparkles with mixed pastel colors at fixed positions
-                        const positions = [
-                            { top: '-10px', left: '-10px', color: '#FFB5E8', delay: '0s' },     // Pastel pink
-                            { top: '-10px', right: '-10px', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
-                            { top: '-10px', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
-                            { top: '-10px', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
-                            { top: '-10px', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
-                        ];
-                        
-                        positions.forEach(pos => {
-                            const sparkleClone = sparkle.cloneNode(true);
-                            sparkleClone.style.fill = pos.color;
-                            sparkleClone.querySelector('.sparkle-path').style.fill = pos.color;
-                            sparkleClone.style.animationDelay = pos.delay;
-                            Object.entries(pos).forEach(([key, value]) => {
-                                if (key !== 'color' && key !== 'delay') {
-                                    sparkleClone.style[key] = value;
-                                }
-                            });
-                            element.appendChild(sparkleClone);
-                        });
-                    }
-                }
-            });
-            
-            this.saveCustomization();
-        });
-
-        // Neon glow color change
-        document.getElementById('neon-glow-color').addEventListener('input', (e) => {
-            const widget = document.getElementById('weather-widget');
-            widget.style.setProperty('--neon-glow-color', e.target.value);
-            this.saveCustomization();
-        });
-
         // Theme change
         document.getElementById('theme-select').addEventListener('change', () => {
             this.applyCustomization();
@@ -284,9 +210,7 @@ class WeatherWidget {
             unit: document.getElementById('unit-select').value,
             apiKey: this.apiKey,
             locationType: document.getElementById('location-type').value,
-            location: this.getLocationData(),
-            textAnimation: document.getElementById('text-animation').value,
-            neonGlowColor: document.getElementById('neon-glow-color').value
+            location: this.getLocationData()
         };
 
         const params = new URLSearchParams();
@@ -336,9 +260,7 @@ class WeatherWidget {
             unit: document.getElementById('unit-select').value,
             apiKey: this.apiKey,
             locationType: document.getElementById('location-type').value,
-            location: this.getLocationData(),
-            textAnimation: document.getElementById('text-animation').value,
-            neonGlowColor: document.getElementById('neon-glow-color').value
+            location: this.getLocationData()
         };
 
         const params = new URLSearchParams();
@@ -381,12 +303,6 @@ class WeatherWidget {
                 document.getElementById('font-select').value = data.font || 'Roboto';
                 document.getElementById('size-select').value = data.size || 'medium';
                 document.getElementById('unit-select').value = data.unit || 'celsius';
-                document.getElementById('text-animation').value = data.textAnimation || 'none';
-                document.getElementById('neon-glow-color').value = data.neonGlowColor || '#ffffff';
-
-                // Set neon glow color CSS variable
-                const widget = document.getElementById('weather-widget');
-                widget.style.setProperty('--neon-glow-color', data.neonGlowColor || '#ffffff');
                 
                 // Set API key
                 if (data.apiKey) {
@@ -425,38 +341,15 @@ class WeatherWidget {
         const font = document.getElementById('font-select').value;
         const size = document.getElementById('size-select').value;
         const unit = document.getElementById('unit-select').value;
-        const textAnimation = document.getElementById('text-animation').value;
-        const neonGlowColor = document.getElementById('neon-glow-color').value;
 
         const widget = document.getElementById('weather-widget');
-        
-        // Show/hide neon glow color picker
-        const neonGlowSection = document.getElementById('neon-glow-section');
-        neonGlowSection.classList.toggle('visible', textAnimation === 'neon');
-        
-        // Set neon glow color
-        widget.style.setProperty('--neon-glow-color', neonGlowColor);
-
-        const customization = {
-            theme,
-            bgColorStart,
-            bgColorEnd,
-            bgColorSolid,
-            bgType,
-            textColor,
-            font,
-            size,
-            unit,
-            textAnimation,
-            neonGlowColor
-        };
 
         // Apply theme background
-        if (customization.theme === 'custom') {
-            if (customization.bgType === 'gradient') {
-                widget.style.background = `linear-gradient(135deg, ${customization.bgColorStart}, ${customization.bgColorEnd})`;
+        if (theme === 'custom') {
+            if (bgType === 'gradient') {
+                widget.style.background = `linear-gradient(135deg, ${bgColorStart}, ${bgColorEnd})`;
             } else {
-                widget.style.background = customization.bgColorSolid;
+                widget.style.background = bgColorSolid;
             }
         } else {
             const gradients = {
@@ -469,70 +362,15 @@ class WeatherWidget {
                 cosmic: ['#6c5ce7', '#fd79a8'],
                 cherry: ['#ff758c', '#ff7eb3']
             };
-            const [startColor, endColor] = gradients[customization.theme] || gradients.light;
+            const [startColor, endColor] = gradients[theme] || gradients.light;
             widget.style.background = `linear-gradient(135deg, ${startColor}, ${endColor})`;
         }
 
-        // Apply text color and animations
+        // Apply text color
         const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
-        const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse', 'text-sparkle'];
-        
-        // Remove all sparkle elements first
-        widget.querySelectorAll('.sparkle').forEach(el => el.remove());
-        
         textElements.forEach(element => {
-            // First remove all animation classes and styles
-            element.classList.remove(...animationClasses);
-            element.style.color = textColor; // Reset to default text color
-            element.style.backgroundImage = 'none';
-            element.style.webkitBackgroundClip = 'unset';
-            element.style.backgroundClip = 'unset';
+            element.style.color = textColor;
             element.style.webkitTextFillColor = textColor;
-            element.style.textShadow = 'none'; // Explicitly remove text shadow
-            element.style.transform = 'none'; // Reset any transforms
-            
-            // Then apply the new animation if specified
-            if (textAnimation !== 'none') {
-                element.classList.add(`text-${textAnimation}`);
-                if (textAnimation === 'rainbow') {
-                    element.style.webkitTextFillColor = 'transparent';
-                    element.style.backgroundImage = 'linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
-                    element.style.webkitBackgroundClip = 'text';
-                    element.style.backgroundClip = 'text';
-                }
-                if (textAnimation === 'neon') {
-                    widget.style.setProperty('--neon-glow-color', neonGlowColor);
-                }
-                if (textAnimation === 'sparkle') {
-                    // Add sparkles
-                    const sparkle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-                    sparkle.setAttribute('viewBox', '0 0 24 24');
-                    sparkle.setAttribute('class', 'sparkle');
-                    sparkle.innerHTML = '<path class="sparkle-path" d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41z"/>';
-                    
-                    // Add 5 sparkles with mixed pastel colors at fixed positions
-                    const positions = [
-                        { top: '-10px', left: '-10px', color: '#FFB5E8', delay: '0s' },     // Pastel pink
-                        { top: '-10px', right: '-10px', color: '#B5FFE8', delay: '0.6s' },  // Pastel mint
-                        { top: '-10px', left: '25%', color: '#B5B9FF', delay: '1.2s' },  // Pastel blue
-                        { top: '-10px', right: '25%', color: '#FFE8B5', delay: '1.8s' }, // Pastel yellow
-                        { top: '-10px', left: '45%', color: '#E8B5FF', delay: '2.4s' }   // Pastel purple
-                    ];
-                    
-                    positions.forEach(pos => {
-                        const sparkleClone = sparkle.cloneNode(true);
-                        sparkleClone.style.fill = pos.color;
-                        sparkleClone.querySelector('.sparkle-path').style.fill = pos.color;
-                        sparkleClone.style.animationDelay = pos.delay;
-                        Object.entries(pos).forEach(([key, value]) => {
-                            if (key !== 'color' && key !== 'delay') {
-                                sparkleClone.style[key] = value;
-                            }
-                        });
-                        element.appendChild(sparkleClone);
-                    });
-                }
-            }
         });
 
         // Keep icons visible with text color
@@ -540,9 +378,6 @@ class WeatherWidget {
         iconElements.forEach(icon => {
             icon.style.color = textColor;
             icon.style.webkitTextFillColor = textColor;
-            icon.style.textShadow = 'none'; // Ensure icons don't get glow effect
-            icon.style.transform = 'none'; // Ensure icons don't pulse
-            icon.style.backgroundImage = 'none'; // Ensure icons don't get rainbow
         });
 
         // Apply font to all text elements except icons
@@ -555,12 +390,17 @@ class WeatherWidget {
 
         // Apply size
         const sizes = {
-            small: { width: '250px', padding: '15px' },
-            medium: { width: '300px', padding: '20px' },
-            large: { width: '350px', padding: '25px' }
+            small: { width: '250px', height: '300px', padding: '15px' },
+            medium: { width: '300px', height: '350px', padding: '20px' },
+            large: { width: '350px', height: '400px', padding: '25px' }
         };
         widget.style.width = sizes[size].width;
+        widget.style.height = sizes[size].height;
         widget.style.padding = sizes[size].padding;
+        
+        // Update CSS variables
+        document.documentElement.style.setProperty('--widget-width', sizes[size].width);
+        document.documentElement.style.setProperty('--widget-padding', sizes[size].padding);
 
         // Apply temperature unit and convert if necessary
         const tempElement = document.getElementById('temperature');
@@ -591,9 +431,7 @@ class WeatherWidget {
             textColor: document.getElementById('text-color').value,
             font: document.getElementById('font-select').value,
             size: document.getElementById('size-select').value,
-            unit: document.getElementById('unit-select').value,
-            textAnimation: document.getElementById('text-animation').value,
-            neonGlowColor: document.getElementById('neon-glow-color').value
+            unit: document.getElementById('unit-select').value
         };
         localStorage.setItem('weatherWidgetCustomization', JSON.stringify(customization));
     }
@@ -612,8 +450,6 @@ class WeatherWidget {
                 document.getElementById('font-select').value = customization.font || 'Roboto';
                 document.getElementById('size-select').value = customization.size || 'medium';
                 document.getElementById('unit-select').value = customization.unit || 'celsius';
-                document.getElementById('text-animation').value = customization.textAnimation || 'none';
-                document.getElementById('neon-glow-color').value = customization.neonGlowColor || '#ffffff';
                 this.applyCustomization();
             } catch (error) {
                 console.error('Error loading customization:', error);
@@ -621,7 +457,6 @@ class WeatherWidget {
         }
     }
 
-    // Add event listeners for real-time preview of custom colors
     setupCustomColorPreview() {
         const colorInputs = ['bg-color-start', 'bg-color-end', 'bg-color-solid', 'text-color'];
         const widget = document.getElementById('weather-widget');
@@ -647,14 +482,11 @@ class WeatherWidget {
         
         colorInputs.forEach(id => {
             document.getElementById(id).addEventListener('input', (e) => {
-                const textAnimation = document.getElementById('text-animation').value;
                 if (id === 'text-color') {
                     const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
                     textElements.forEach(element => {
-                        if (textAnimation !== 'rainbow') {
-                            element.style.color = e.target.value;
-                            element.style.webkitTextFillColor = e.target.value;
-                        }
+                        element.style.color = e.target.value;
+                        element.style.webkitTextFillColor = e.target.value;
                     });
                     // Always apply color to icons
                     const iconElements = widget.querySelectorAll('.material-icons');
@@ -709,9 +541,7 @@ class WeatherWidget {
             // Update text color for all elements
             const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
             textElements.forEach(element => {
-                if (!element.classList.contains('text-rainbow')) {
-                    element.style.color = document.getElementById('text-color').value;
-                }
+                element.style.color = document.getElementById('text-color').value;
             });
         });
     }
