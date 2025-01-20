@@ -237,7 +237,34 @@ class WeatherWidget {
         params.append('embed', 'true');
         params.append('data', btoa(JSON.stringify(customization)));
         const embedUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-        return `<iframe src="${embedUrl}" width="350" height="500" frameborder="0"></iframe>`;
+        
+        // Get current widget dimensions
+        const widget = document.getElementById('weather-widget');
+        const widgetWidth = widget.offsetWidth;
+        const widgetHeight = widget.offsetHeight;
+        
+        return `<!-- Weather Widget HTML -->
+<div id="weather-widget-container" style="width: ${widgetWidth}px; height: ${widgetHeight}px;">
+    <iframe 
+        src="${embedUrl}" 
+        style="width: 100%; height: 100%; border: none; overflow: hidden; display: block;" 
+        scrolling="no"
+        loading="lazy"
+        title="Weather Widget">
+    </iframe>
+</div>
+
+<!-- Weather Widget Responsive CSS -->
+<style>
+#weather-widget-container {
+    max-width: 100%;
+    margin: 0 auto;
+    aspect-ratio: ${widgetWidth} / ${widgetHeight};
+}
+#weather-widget-container iframe {
+    border-radius: 20px;
+}
+</style>`;
     }
 
     generateNotionLink() {
@@ -279,6 +306,9 @@ class WeatherWidget {
         const params = new URLSearchParams(window.location.search);
         if (params.get('embed') === 'true' && params.get('data')) {
             try {
+                // Set embed mode on body
+                document.body.setAttribute('data-embed', 'true');
+                
                 const data = JSON.parse(atob(params.get('data')));
                 
                 // Apply customization
@@ -328,10 +358,6 @@ class WeatherWidget {
                 // Apply customization and fetch weather
                 this.applyCustomization();
                 this.fetchWeather();
-
-                // Hide customization panel in embed mode
-                document.getElementById('customization-panel').style.display = 'none';
-                document.querySelector('.embed-section').style.display = 'none';
             } catch (error) {
                 console.error('Error loading embed data:', error);
             }
