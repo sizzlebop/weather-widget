@@ -1,6 +1,6 @@
 # 🌦️ Weather Widget
 
-A beautiful and interactive weather widget that displays current weather conditions with smooth animations. The widget features dynamic weather animations including sunny, rainy, cloudy, snowy, foggy, and thunderstorm conditions.
+A sleek, animated weather widget with real-time conditions. Features beautiful weather animations, Notion compatibility, and easy embedding for any website. Powered by OpenWeather API. ☀️🌧️❄️
 
 ## ✨ Features
 
@@ -36,6 +36,7 @@ To embed the weather widget in your website:
 3. Paste the code into your website where you want the widget to appear
 
 For Notion users:
+
 1. Click the "Embed Link" button in the widget interface
 2. Copy the generated link
 3. In Notion, create an "Embed" block and paste the link
