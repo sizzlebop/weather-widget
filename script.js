@@ -1,6 +1,6 @@
 class WeatherWidget {
     constructor() {
-        this.apiKey = localStorage.getItem('openWeatherApiKey') || '805b142aaa4b0305c991f291c921bfa4';
+        this.apiKey = localStorage.getItem('openWeatherApiKey') || '';
         this.animations = new WeatherAnimations(document.getElementById('weather-animation'));
         this.setupEventListeners();
         this.setupCustomColorPreview();
@@ -56,7 +56,7 @@ class WeatherWidget {
         });
 
         // Color changes
-        ['bg-color-start', 'bg-color-end', 'text-color'].forEach(id => {
+        ['bg-color-start', 'bg-color-end', 'bg-color-solid', 'text-color'].forEach(id => {
             document.getElementById(id).addEventListener('input', () => {
                 this.applyCustomization();
                 this.saveCustomization();
@@ -68,10 +68,10 @@ class WeatherWidget {
             const font = document.getElementById('font-select').value;
             const widget = document.getElementById('weather-widget');
             
-            // Apply font to the widget and all its children
+            // Apply font to the widget and all its children except icons
             const elements = widget.getElementsByTagName('*');
             for (let element of elements) {
-                if (!(element instanceof SVGElement)) {
+                if (!(element instanceof SVGElement) && !element.classList.contains('material-icons')) {
                     element.style.setProperty('font-family', `${font}, sans-serif`, 'important');
                 }
             }
@@ -158,6 +158,11 @@ class WeatherWidget {
     }
 
     async fetchWeather() {
+        if (!this.apiKey) {
+            alert('Please enter your OpenWeather API key first!');
+            return;
+        }
+
         const locationType = document.getElementById('location-type').value;
         let url;
 
@@ -173,11 +178,18 @@ class WeatherWidget {
 
         try {
             const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Invalid API key or network error');
+            }
             const data = await response.json();
             this.updateWidget(data);
         } catch (error) {
             console.error('Error fetching weather data:', error);
-            alert('Error fetching weather data. Please try again.');
+            if (error.message === 'Invalid API key or network error') {
+                alert('Error: Invalid API key. Please check your OpenWeather API key.');
+            } else {
+                alert('Error fetching weather data. Please try again.');
+            }
         }
     }
 
@@ -273,10 +285,27 @@ class WeatherWidget {
                 document.getElementById('theme-select').value = data.theme;
                 document.getElementById('bg-color-start').value = data.bgColorStart;
                 document.getElementById('bg-color-end').value = data.bgColorEnd;
+                document.getElementById('bg-color-solid').value = data.bgColorSolid || '#ffffff';
+                document.getElementById('bg-type-select').value = data.bgType || 'gradient';
                 document.getElementById('text-color').value = data.textColor;
                 document.getElementById('font-select').value = data.font;
                 document.getElementById('size-select').value = data.size;
                 document.getElementById('unit-select').value = data.unit;
+                
+                // Show/hide custom colors section based on theme
+                const customColors = document.getElementById('custom-colors');
+                customColors.style.display = data.theme === 'custom' ? 'block' : 'none';
+                
+                // Show/hide gradient/solid color sections based on background type
+                const gradientColors = document.getElementById('gradient-colors');
+                const solidColor = document.getElementById('solid-color');
+                if (data.bgType === 'gradient') {
+                    gradientColors.style.display = 'block';
+                    solidColor.style.display = 'none';
+                } else {
+                    gradientColors.style.display = 'none';
+                    solidColor.style.display = 'block';
+                }
                 
                 // Set API key
                 if (data.apiKey) {
@@ -313,6 +342,8 @@ class WeatherWidget {
         const theme = document.getElementById('theme-select').value;
         const bgColorStart = document.getElementById('bg-color-start').value;
         const bgColorEnd = document.getElementById('bg-color-end').value;
+        const bgColorSolid = document.getElementById('bg-color-solid').value;
+        const bgType = document.getElementById('bg-type-select').value;
         const textColor = document.getElementById('text-color').value;
         const font = document.getElementById('font-select').value;
         const size = document.getElementById('size-select').value;
@@ -324,6 +355,8 @@ class WeatherWidget {
             theme,
             bgColorStart,
             bgColorEnd,
+            bgColorSolid,
+            bgType,
             textColor,
             font,
             size,
@@ -331,14 +364,26 @@ class WeatherWidget {
             textAnimation
         };
 
+        const gradients = {
+            light: ['#6e8efb', '#a777e3'],
+            dark: ['#2c3e50', '#3498db'],
+            sunset: ['#ff6b6b', '#feca57'],
+            ocean: ['#00b894', '#0984e3'],
+            forest: ['#55efc4', '#00b894'],
+            aurora: ['#6c5ce7', '#00b894'],
+            cosmic: ['#6c5ce7', '#fd79a8'],
+            cherry: ['#ff758c', '#ff7eb3']
+        };
+
         // Apply theme
         if (customization.theme === 'custom') {
-            widget.style.background = `linear-gradient(135deg, ${customization.bgColorStart}, ${customization.bgColorEnd})`;
+            if (customization.bgType === 'gradient') {
+                widget.style.background = `linear-gradient(135deg, ${customization.bgColorStart}, ${customization.bgColorEnd})`;
+            } else {
+                widget.style.background = customization.bgColorSolid;
+            }
         } else {
             switch(customization.theme) {
-                case 'dark':
-                    widget.style.background = 'linear-gradient(135deg, #2c3e50, #3498db)';
-                    break;
                 case 'sunset':
                     widget.style.background = 'linear-gradient(135deg, #ff6b6b, #feca57)';
                     break;
@@ -354,17 +399,29 @@ class WeatherWidget {
                 case 'cosmic':
                     widget.style.background = 'linear-gradient(135deg, #6c5ce7, #fd79a8)';
                     break;
-                default: // light theme
+                case 'cherry':
+                    widget.style.background = 'linear-gradient(135deg, #ff758c, #ff7eb3)';
+                    break;
+                case 'dark': // Ocean Night
+                    widget.style.background = 'linear-gradient(135deg, #2c3e50, #3498db)';
+                    break;
+                default: // Purple Dream (light)
                     widget.style.background = 'linear-gradient(135deg, #6e8efb, #a777e3)';
             }
         }
 
         // Apply text color
-        const textElements = widget.querySelectorAll('span, div:not(.weather-animation), i');
+        const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
         textElements.forEach(element => {
             if (!element.classList.contains('text-rainbow')) {
                 element.style.color = textColor;
             }
+        });
+
+        // Keep icons visible in all themes
+        const iconElements = widget.querySelectorAll('.material-icons');
+        iconElements.forEach(icon => {
+            icon.style.color = textColor;
         });
 
         // Remove previous text animations
@@ -379,10 +436,12 @@ class WeatherWidget {
             }
         });
 
-        // Apply font to all text elements
+        // Apply font to all text elements except icons
         widget.style.fontFamily = `${customization.font}, sans-serif`;
         textElements.forEach(element => {
-            element.style.fontFamily = `${customization.font}, sans-serif`;
+            if (!element.classList.contains('material-icons')) {
+                element.style.fontFamily = `${customization.font}, sans-serif`;
+            }
         });
 
         // Apply size
@@ -418,6 +477,8 @@ class WeatherWidget {
             theme: document.getElementById('theme-select').value,
             bgColorStart: document.getElementById('bg-color-start').value,
             bgColorEnd: document.getElementById('bg-color-end').value,
+            bgColorSolid: document.getElementById('bg-color-solid').value,
+            bgType: document.getElementById('bg-type-select').value,
             textColor: document.getElementById('text-color').value,
             font: document.getElementById('font-select').value,
             size: document.getElementById('size-select').value,
@@ -429,38 +490,67 @@ class WeatherWidget {
 
     // Add event listeners for real-time preview of custom colors
     setupCustomColorPreview() {
-        const colorInputs = ['bg-color-start', 'bg-color-end', 'text-color'];
+        const colorInputs = ['bg-color-start', 'bg-color-end', 'bg-color-solid', 'text-color'];
         const widget = document.getElementById('weather-widget');
+        const customColors = document.getElementById('custom-colors');
+        const gradientColors = document.getElementById('gradient-colors');
+        const solidColor = document.getElementById('solid-color');
+        
+        // Background type change handler
+        document.getElementById('bg-type-select').addEventListener('change', (e) => {
+            if (e.target.value === 'gradient') {
+                gradientColors.style.display = 'block';
+                solidColor.style.display = 'none';
+                const start = document.getElementById('bg-color-start').value;
+                const end = document.getElementById('bg-color-end').value;
+                widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
+            } else {
+                gradientColors.style.display = 'none';
+                solidColor.style.display = 'block';
+                const color = document.getElementById('bg-color-solid').value;
+                widget.style.background = color;
+            }
+        });
         
         colorInputs.forEach(id => {
             document.getElementById(id).addEventListener('input', (e) => {
                 if (id === 'text-color') {
-                    const textElements = widget.querySelectorAll('span, div:not(.weather-animation), i');
+                    const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
                     textElements.forEach(element => {
                         if (!element.classList.contains('text-rainbow')) {
                             element.style.color = e.target.value;
                         }
                     });
                 } else if (document.getElementById('theme-select').value === 'custom') {
-                    const start = document.getElementById('bg-color-start').value;
-                    const end = document.getElementById('bg-color-end').value;
-                    widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
+                    if (id === 'bg-color-solid') {
+                        widget.style.background = e.target.value;
+                    } else if (id.startsWith('bg-color-')) {
+                        const start = document.getElementById('bg-color-start').value;
+                        const end = document.getElementById('bg-color-end').value;
+                        widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
+                    }
                 }
             });
         });
 
-        // Add theme select change handler
+        // Theme select change handler
         document.getElementById('theme-select').addEventListener('change', (e) => {
-            const customColors = document.getElementById('custom-colors');
             const widget = document.getElementById('weather-widget');
+            const customColors = document.getElementById('custom-colors');
             
             if (e.target.value === 'custom') {
                 customColors.style.display = 'block';
-                const start = document.getElementById('bg-color-start').value;
-                const end = document.getElementById('bg-color-end').value;
-                widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
+                const bgType = document.getElementById('bg-type-select').value;
+                if (bgType === 'gradient') {
+                    const start = document.getElementById('bg-color-start').value;
+                    const end = document.getElementById('bg-color-end').value;
+                    widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
+                } else {
+                    const color = document.getElementById('bg-color-solid').value;
+                    widget.style.background = color;
+                }
             } else {
-                customColors.style.display = 'block';
+                customColors.style.display = 'none';
                 const gradients = {
                     light: ['#6e8efb', '#a777e3'],
                     dark: ['#2c3e50', '#3498db'],
@@ -468,14 +558,15 @@ class WeatherWidget {
                     ocean: ['#00b894', '#0984e3'],
                     forest: ['#55efc4', '#00b894'],
                     aurora: ['#6c5ce7', '#00b894'],
-                    cosmic: ['#6c5ce7', '#fd79a8']
+                    cosmic: ['#6c5ce7', '#fd79a8'],
+                    cherry: ['#ff758c', '#ff7eb3']
                 };
                 const [startColor, endColor] = gradients[e.target.value];
                 widget.style.background = `linear-gradient(135deg, ${startColor}, ${endColor})`;
             }
             
             // Update text color for all elements
-            const textElements = widget.querySelectorAll('span, div:not(.weather-animation), i');
+            const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
             textElements.forEach(element => {
                 if (!element.classList.contains('text-rainbow')) {
                     element.style.color = document.getElementById('text-color').value;

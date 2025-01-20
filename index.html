@@ -64,9 +64,12 @@
 
         <div id="customization-panel" class="customization-panel">
             <div class="panel-section">
-                <h4>API Key</h4>
+                <h4>OpenWeather API Key <span style="color: #ff6b6b;">*Required</span></h4>
                 <div class="input-group">
-                    <input type="text" id="api-key" placeholder="Enter OpenWeather API Key">
+                    <input type="text" id="api-key" placeholder="Enter your OpenWeather API key">
+                    <a href="https://openweathermap.org/api" target="_blank" style="color: #e0e0e0; font-size: 0.9em; text-decoration: none; margin: 5px 0;">
+                        Get your free API key here
+                    </a>
                     <button id="save-api-key">Save API Key</button>
                 </div>
             </div>
@@ -97,27 +100,46 @@
             <div class="panel-section">
                 <h4>Theme</h4>
                 <select id="theme-select">
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
                     <option value="sunset">Sunset</option>
                     <option value="ocean">Ocean</option>
                     <option value="forest">Forest</option>
                     <option value="aurora">Aurora</option>
                     <option value="cosmic">Cosmic</option>
+                    <option value="cherry">Cherry Blossom</option>
+                    <option value="light">Purple Dream</option>
+                    <option value="dark">Ocean Night</option>
                     <option value="custom">Custom</option>
                 </select>
             </div>
 
             <div class="panel-section" id="custom-colors">
-                <h4>Custom Colors</h4>
-                <div class="color-picker">
-                    <label>Background Start:</label>
-                    <input type="color" id="bg-color-start">
+                <h4>Background Options</h4>
+                <select id="bg-type-select" style="margin-bottom: 15px;">
+                    <option value="gradient">Gradient</option>
+                    <option value="solid">Solid Color</option>
+                </select>
+                
+                <div id="gradient-colors">
+                    <div class="color-picker">
+                        <label>Background Start:</label>
+                        <input type="color" id="bg-color-start">
+                    </div>
+                    <div class="color-picker">
+                        <label>Background End:</label>
+                        <input type="color" id="bg-color-end">
+                    </div>
                 </div>
-                <div class="color-picker">
-                    <label>Background End:</label>
-                    <input type="color" id="bg-color-end">
+                
+                <div id="solid-color" style="display: none;">
+                    <div class="color-picker">
+                        <label>Background Color:</label>
+                        <input type="color" id="bg-color-solid">
+                    </div>
                 </div>
+            </div>
+
+            <div class="panel-section">
+                <h4>Text Color</h4>
                 <div class="color-picker">
                     <label>Text Color:</label>
                     <input type="color" id="text-color">

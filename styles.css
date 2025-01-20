@@ -344,7 +344,22 @@ input[type="color"] {
     100% { transform: translate(0); }
 }
 
-/* Ensure color picker is always visible */
+/* Remove the rule that forces custom colors to always be visible */
 #custom-colors {
-    display: block !important;
+    display: none;
+}
+
+.material-icons {
+    font-family: 'Material Icons' !important;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
 } 
