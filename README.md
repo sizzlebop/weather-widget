@@ -14,7 +14,7 @@
   <path d="M40 82l-3 8M55 82l-3 8M70 82l-3 8" stroke="#4169E1" stroke-width="3" stroke-linecap="round"/>
 </svg>
 
-# 🌦️ Weather Widget`</div>`
+# 🌦️ Weather Widget
 
 A beautiful, customizable weather widget that you can embed anywhere. Perfect for websites, blogs, and Notion pages.
 
