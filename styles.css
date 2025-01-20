@@ -490,3 +490,46 @@ input[type="color"] {
 #custom-colors {
     display: none;
 }
+
+.effect-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.effect-option label {
+    min-width: 100px;
+}
+
+.effect-option select {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.effect-option input[type="color"] {
+    width: 50px;
+    padding: 0;
+    height: 30px;
+}
+
+/* Text effect classes */
+.text-shadow-light {
+    text-shadow: 2px 2px 4px var(--text-shadow-color, rgba(0, 0, 0, 0.3));
+}
+
+.text-shadow-medium {
+    text-shadow: 3px 3px 6px var(--text-shadow-color, rgba(0, 0, 0, 0.4));
+}
+
+.text-shadow-heavy {
+    text-shadow: 4px 4px 8px var(--text-shadow-color, rgba(0, 0, 0, 0.5));
+}
+
+.text-stroke-thin {
+    -webkit-text-stroke: 1px var(--text-stroke-color, #000);
+}
+
+.text-stroke-medium {
+    -webkit-text-stroke: 2px var(--text-stroke-color, #000);
+}

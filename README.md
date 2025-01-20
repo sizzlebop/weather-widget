@@ -74,9 +74,24 @@ A beautiful, customizable weather widget that you can embed anywhere. Perfect fo
 
 ## 📐 Size Options
 
-- Small (250x300px)
+- Small (250x320px)
 - Medium (300x350px)
 - Large (350x400px)
+
+## 🎭 Text Effects
+
+### Shadow Options
+- None
+- Light (2px offset, 4px blur)
+- Medium (3px offset, 6px blur)
+- Heavy (4px offset, 8px blur)
+- Customizable shadow color
+
+### Stroke Options
+- None
+- Thin (1px)
+- Medium (2px)
+- Customizable stroke color
 
 ## 🔤 Supported Fonts
 

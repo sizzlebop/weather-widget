@@ -133,6 +133,14 @@ class WeatherWidget {
             navigator.clipboard.writeText(link.value);
             alert('Notion link copied to clipboard!');
         });
+
+        // Text effects change
+        ['text-shadow-select', 'text-shadow-color', 'text-stroke-select', 'text-stroke-color'].forEach(id => {
+            document.getElementById(id).addEventListener('change', () => {
+                this.applyCustomization();
+                this.saveCustomization();
+            });
+        });
     }
 
     async fetchWeather() {
@@ -341,6 +349,10 @@ class WeatherWidget {
         const font = document.getElementById('font-select').value;
         const size = document.getElementById('size-select').value;
         const unit = document.getElementById('unit-select').value;
+        const textShadow = document.getElementById('text-shadow-select').value;
+        const textShadowColor = document.getElementById('text-shadow-color').value;
+        const textStroke = document.getElementById('text-stroke-select').value;
+        const textStrokeColor = document.getElementById('text-stroke-color').value;
 
         const widget = document.getElementById('weather-widget');
         
@@ -369,11 +381,28 @@ class WeatherWidget {
             widget.style.background = `linear-gradient(135deg, ${startColor}, ${endColor})`;
         }
 
-        // Apply text color
+        // Apply text color and effects
         const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
         textElements.forEach(element => {
+            // Remove existing effects
+            element.classList.remove('text-shadow-light', 'text-shadow-medium', 'text-shadow-heavy');
+            element.classList.remove('text-stroke-thin', 'text-stroke-medium', 'text-stroke-thick');
+            
+            // Apply color
             element.style.color = textColor;
             element.style.webkitTextFillColor = textColor;
+
+            // Apply shadow if selected
+            if (textShadow !== 'none') {
+                element.classList.add(`text-shadow-${textShadow}`);
+                element.style.setProperty('--text-shadow-color', textShadowColor);
+            }
+
+            // Apply stroke if selected
+            if (textStroke !== 'none') {
+                element.classList.add(`text-stroke-${textStroke}`);
+                element.style.setProperty('--text-stroke-color', textStrokeColor);
+            }
         });
 
         // Keep icons visible with text color
@@ -393,7 +422,7 @@ class WeatherWidget {
 
         // Apply size
         const sizes = {
-            small: { width: '250px', height: '300px', padding: '15px' },
+            small: { width: '250px', height: '320px', padding: '15px' },
             medium: { width: '300px', height: '350px', padding: '20px' },
             large: { width: '350px', height: '400px', padding: '25px' }
         };
@@ -434,7 +463,11 @@ class WeatherWidget {
             textColor: document.getElementById('text-color').value,
             font: document.getElementById('font-select').value,
             size: document.getElementById('size-select').value,
-            unit: document.getElementById('unit-select').value
+            unit: document.getElementById('unit-select').value,
+            textShadow: document.getElementById('text-shadow-select').value,
+            textShadowColor: document.getElementById('text-shadow-color').value,
+            textStroke: document.getElementById('text-stroke-select').value,
+            textStrokeColor: document.getElementById('text-stroke-color').value
         };
         localStorage.setItem('weatherWidgetCustomization', JSON.stringify(customization));
     }
@@ -453,6 +486,10 @@ class WeatherWidget {
                 document.getElementById('font-select').value = customization.font || 'Roboto';
                 document.getElementById('size-select').value = customization.size || 'medium';
                 document.getElementById('unit-select').value = customization.unit || 'celsius';
+                document.getElementById('text-shadow-select').value = customization.textShadow || 'none';
+                document.getElementById('text-shadow-color').value = customization.textShadowColor || '#000000';
+                document.getElementById('text-stroke-select').value = customization.textStroke || 'none';
+                document.getElementById('text-stroke-color').value = customization.textStrokeColor || '#000000';
                 this.applyCustomization();
             } catch (error) {
                 console.error('Error loading customization:', error);
