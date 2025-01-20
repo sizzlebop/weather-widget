@@ -123,15 +123,27 @@ button:hover {
     background: #505050;
 }
 
+.widget-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.embed-section {
+    width: 100%;
+    max-width: var(--widget-width);
+}
+
 .embed-buttons {
     display: flex;
+    justify-content: center;
     gap: 10px;
-    margin-top: 15px;
 }
 
 .preview-panel {
     margin-top: 15px;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     padding: 10px;
 }
@@ -146,6 +158,18 @@ button:hover {
     margin: 0;
     white-space: pre-wrap;
     word-wrap: break-word;
+    background: rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.preview-content input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.1);
+    color: #e0e0e0;
 }
 
 .customization-panel {

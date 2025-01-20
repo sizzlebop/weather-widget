@@ -10,30 +10,53 @@
 </head>
 <body>
     <div class="container">
-        <div id="weather-widget" class="weather-widget">
-            <div class="weather-content">
-                <div class="weather-header">
-                    <div class="location">
-                        <i class="material-icons">location_on</i>
-                        <span id="location-name">Enter Location</span>
+        <div class="widget-container">
+            <div id="weather-widget" class="weather-widget">
+                <div class="weather-content">
+                    <div class="weather-header">
+                        <div class="location">
+                            <i class="material-icons">location_on</i>
+                            <span id="location-name">Enter Location</span>
+                        </div>
+                    </div>
+                    <div class="weather-body">
+                        <div class="weather-animation" id="weather-animation"></div>
+                        <div class="temperature">
+                            <span id="temperature">--</span>
+                            <span class="unit">°C</span>
+                        </div>
+                        <div class="weather-description" id="weather-description">--</div>
+                        <div class="weather-details">
+                            <div class="detail">
+                                <i class="material-icons">water_drop</i>
+                                <span id="humidity">--%</span>
+                            </div>
+                            <div class="detail">
+                                <i class="material-icons">air</i>
+                                <span id="wind">-- m/s</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="weather-body">
-                    <div class="weather-animation" id="weather-animation"></div>
-                    <div class="temperature">
-                        <span id="temperature">--</span>
-                        <span class="unit">°C</span>
+            </div>
+
+            <div class="embed-section">
+                <div class="embed-buttons">
+                    <button id="show-embed-code">Embed Code</button>
+                    <button id="show-notion-link">Embed Link</button>
+                </div>
+                
+                <div id="embed-preview" class="preview-panel hidden">
+                    <div class="preview-content">
+                        <pre><code id="embed-code"></code></pre>
+                        <button id="copy-embed">Copy Code</button>
                     </div>
-                    <div class="weather-description" id="weather-description">--</div>
-                    <div class="weather-details">
-                        <div class="detail">
-                            <i class="material-icons">water_drop</i>
-                            <span id="humidity">--%</span>
-                        </div>
-                        <div class="detail">
-                            <i class="material-icons">air</i>
-                            <span id="wind">-- m/s</span>
-                        </div>
+                </div>
+
+                <div id="notion-preview" class="preview-panel hidden">
+                    <div class="preview-content">
+                        <input type="text" id="notion-link" readonly>
+                        <button id="copy-notion">Copy Link</button>
                     </div>
                 </div>
             </div>
@@ -113,28 +136,6 @@
                     <option value="celsius">Celsius</option>
                     <option value="fahrenheit">Fahrenheit</option>
                 </select>
-            </div>
-
-            <div class="panel-section">
-                <h4>Embed Options</h4>
-                <div class="embed-buttons">
-                    <button id="show-embed-code">Embed Code</button>
-                    <button id="show-notion-link">Embed Link</button>
-                </div>
-                
-                <div id="embed-preview" class="preview-panel hidden">
-                    <div class="preview-content">
-                        <pre><code id="embed-code"></code></pre>
-                        <button id="copy-embed">Copy Code</button>
-                    </div>
-                </div>
-
-                <div id="notion-preview" class="preview-panel hidden">
-                    <div class="preview-content">
-                        <input type="text" id="notion-link" readonly>
-                        <button id="copy-notion">Copy Link</button>
-                    </div>
-                </div>
             </div>
 
             <button id="apply-customization">Apply Changes</button>

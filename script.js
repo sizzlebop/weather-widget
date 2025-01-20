@@ -21,6 +21,23 @@ class WeatherWidget {
             }
         });
 
+        // Temperature unit toggle
+        document.getElementById('unit-select').addEventListener('change', (e) => {
+            const tempElement = document.getElementById('temperature');
+            const unitElement = document.querySelector('.unit');
+            const currentTemp = parseFloat(tempElement.textContent);
+            
+            if (!isNaN(currentTemp)) {
+                if (e.target.value === 'fahrenheit' && unitElement.textContent === '°C') {
+                    tempElement.textContent = Math.round((currentTemp * 9/5) + 32);
+                    unitElement.textContent = '°F';
+                } else if (e.target.value === 'celsius' && unitElement.textContent === '°F') {
+                    tempElement.textContent = Math.round((currentTemp - 32) * 5/9);
+                    unitElement.textContent = '°C';
+                }
+            }
+        });
+
         // Get weather button
         document.getElementById('get-weather').addEventListener('click', () => this.fetchWeather());
 
@@ -89,7 +106,23 @@ class WeatherWidget {
 
     updateWidget(data) {
         document.getElementById('location-name').textContent = data.name;
-        document.getElementById('temperature').textContent = Math.round(data.main.temp);
+        
+        // Get the current unit preference
+        const unitSelect = document.getElementById('unit-select');
+        const tempElement = document.getElementById('temperature');
+        const unitElement = document.querySelector('.unit');
+        
+        // Temperature comes in Celsius from the API
+        const tempCelsius = data.main.temp;
+        
+        if (unitSelect.value === 'fahrenheit') {
+            tempElement.textContent = Math.round((tempCelsius * 9/5) + 32);
+            unitElement.textContent = '°F';
+        } else {
+            tempElement.textContent = Math.round(tempCelsius);
+            unitElement.textContent = '°C';
+        }
+        
         document.getElementById('weather-description').textContent = data.weather[0].description;
         document.getElementById('humidity').textContent = `${data.main.humidity}%`;
         document.getElementById('wind').textContent = `${data.wind.speed} m/s`;

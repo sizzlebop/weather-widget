@@ -1,10 +1,14 @@
 class WeatherAnimations {
     constructor(container) {
         this.container = container;
-        // Set up container without background color
+        // Set up container with overflow hidden to keep animations within bounds
         this.container.style.cssText = `
             position: relative;
             z-index: 2;
+            overflow: hidden;
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
         `;
     }
 
@@ -49,8 +53,8 @@ class WeatherAnimations {
         const keyframes = document.createElement('style');
         keyframes.textContent = `
             @keyframes rain {
-                0% { transform: translateY(0); opacity: 1; }
-                100% { transform: translateY(100px); opacity: 0; }
+                0% { transform: translateY(-10px); opacity: 1; }
+                100% { transform: translateY(160px); opacity: 0; }
             }
         `;
 
@@ -64,7 +68,7 @@ class WeatherAnimations {
                 background: #87CEEB !important;
                 background-color: #87CEEB !important;
                 position: absolute;
-                top: 0;
+                top: -20px;
                 left: ${Math.random() * 100}%;
                 animation: rain 1s infinite linear;
                 animation-delay: ${Math.random() * 1}s;
@@ -114,8 +118,8 @@ class WeatherAnimations {
         const keyframes = document.createElement('style');
         keyframes.textContent = `
             @keyframes snow {
-                0% { transform: translateY(0) rotate(0deg); }
-                100% { transform: translateY(100px) rotate(360deg); }
+                0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
+                100% { transform: translateY(160px) rotate(360deg); opacity: 0; }
             }
         `;
 
@@ -130,7 +134,7 @@ class WeatherAnimations {
                 background-color: #FFFFFF !important;
                 border-radius: 50%;
                 position: absolute;
-                top: 0;
+                top: -10px;
                 left: ${Math.random() * 100}%;
                 animation: snow 3s infinite linear;
                 animation-delay: ${Math.random() * 3}s;
@@ -172,6 +176,7 @@ class WeatherAnimations {
                 color-scheme: light !important;
                 forced-color-adjust: none;
                 box-shadow: 0 0 10px #FFFFFF !important;
+                opacity: 0.7;
             `;
             this.container.appendChild(fog);
         }
@@ -187,15 +192,23 @@ class WeatherAnimations {
             position: absolute;
             top: 0;
             left: 0;
-            background: #FFFFD4 !important;
-            background-color: #FFFFD4 !important;
+            background: transparent !important;
             animation: lightning 5s infinite;
-            animation-delay: ${Math.random() * 2}s;
             z-index: 3;
             color-scheme: light !important;
             forced-color-adjust: none;
-            box-shadow: 0 0 25px #FFFFD4 !important;
         `;
+
+        const keyframes = document.createElement('style');
+        keyframes.textContent = `
+            @keyframes lightning {
+                0%, 95%, 98% { background: transparent !important; }
+                96%, 99% { background: #FFFFD4 !important; box-shadow: 0 0 25px #FFFFD4 !important; }
+                97%, 100% { background: transparent !important; }
+            }
+        `;
+
+        document.head.appendChild(keyframes);
         this.container.appendChild(lightning);
     }
 
