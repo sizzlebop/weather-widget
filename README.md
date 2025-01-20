@@ -1,6 +1,24 @@
-# 🌦️ Weather Widget
+<div align="center">
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8ba3fc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b98fe7;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Sun rays (made larger) -->
+  <circle cx="30" cy="52" r="20" fill="#FFD700"/>
+  <!-- Main cloud (adjusted path to create space for sun) -->
+  <path d="M95 65c0-11-9-20-20-20-1.1 0-2.2 0.1-3.2 0.3C69.5 34.5 60.2 27 49 27c-13.8 0-25 11.2-25 25 0 0.7 0-0.7 0 0C15.7 52.9 9 60.1 9 69c0 9.4 7.6 17 17 17h52c9.4 0 17-7.6 17-17z" fill="url(#grad1)"/>
+  <!-- Rain drops (adjusted to come out from under the cloud) -->
+  <path d="M40 82l-3 8M55 82l-3 8M70 82l-3 8" stroke="#4169E1" stroke-width="3" stroke-linecap="round"/>
+</svg>
+
+# 🌦️ Weather Widget</div>
 
 A beautiful, customizable weather widget that you can embed anywhere. Perfect for websites, blogs, and Notion pages.
+
+![Weather Widget Preview](https://res.cloudinary.com/di7ctlowx/image/upload/v1737380828/weather-widget_kybydv.png)
 
 ## ✨ Features
 
