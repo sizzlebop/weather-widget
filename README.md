@@ -14,7 +14,7 @@
   <path d="M40 82l-3 8M55 82l-3 8M70 82l-3 8" stroke="#4169E1" stroke-width="3" stroke-linecap="round"/>
 </svg>
 
-# 🌦️ Weather Widget</div>
+# 🌦️ Weather Widget`</div>`
 
 A beautiful, customizable weather widget that you can embed anywhere. Perfect for websites, blogs, and Notion pages.
 
@@ -99,6 +99,7 @@ A beautiful, customizable weather widget that you can embed anywhere. Perfect fo
 ## 🎭 Text Effects
 
 ### Shadow Options
+
 - None
 - Light (2px offset, 4px blur)
 - Medium (3px offset, 6px blur)
@@ -106,6 +107,7 @@ A beautiful, customizable weather widget that you can embed anywhere. Perfect fo
 - Customizable shadow color
 
 ### Stroke Options
+
 - None
 - Thin (1px)
 - Medium (2px)
@@ -176,4 +178,4 @@ For support, please open an issue in the GitHub repository or contact the mainta
 
 ---
 
-Made with ❤️ by pinkpixel
+Made with ❤️ by pink pixel
