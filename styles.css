@@ -276,11 +276,11 @@ input[type="color"] {
 
 /* Text Animations */
 .text-neon {
-    text-shadow: 0 0 5px #fff,
-                0 0 10px #fff,
-                0 0 20px currentColor,
-                0 0 30px currentColor,
-                0 0 40px currentColor !important;
+    text-shadow: 0 0 3px var(--neon-glow-color),
+                0 0 6px var(--neon-glow-color),
+                0 0 12px currentColor,
+                0 0 18px currentColor,
+                0 0 24px currentColor !important;
     animation: neon 1.5s ease-in-out infinite alternate;
 }
 
@@ -293,6 +293,7 @@ input[type="color"] {
     animation: rainbow 4s linear infinite;
     background-size: 200% auto;
     text-shadow: none !important;
+    -webkit-text-fill-color: transparent;
 }
 
 .text-pulse {
@@ -331,18 +332,18 @@ input[type="color"] {
 /* Keyframes */
 @keyframes neon {
     from {
-        text-shadow: 0 0 5px #fff,
-                    0 0 10px #fff,
-                    0 0 20px currentColor,
-                    0 0 30px currentColor,
-                    0 0 40px currentColor;
+        text-shadow: 0 0 3px var(--neon-glow-color),
+                    0 0 6px var(--neon-glow-color),
+                    0 0 12px currentColor,
+                    0 0 18px currentColor,
+                    0 0 24px currentColor;
     }
     to {
-        text-shadow: 0 0 2px #fff,
-                    0 0 5px #fff,
-                    0 0 10px currentColor,
-                    0 0 20px currentColor,
-                    0 0 30px currentColor;
+        text-shadow: 0 0 2px var(--neon-glow-color),
+                    0 0 4px var(--neon-glow-color),
+                    0 0 8px currentColor,
+                    0 0 14px currentColor,
+                    0 0 20px currentColor;
     }
 }
 
@@ -393,4 +394,20 @@ input[type="color"] {
     word-wrap: normal;
     direction: ltr;
     -webkit-font-smoothing: antialiased;
+}
+
+/* Neon glow color picker */
+#neon-glow-section {
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#neon-glow-section.visible {
+    display: block;
+}
+
+#neon-glow-section .color-picker {
+    margin-bottom: 0;
 } 
