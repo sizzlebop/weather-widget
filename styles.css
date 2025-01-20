@@ -10,14 +10,14 @@ body {
     margin: 0;
     padding: 20px;
     font-family: var(--font-family);
-    background-color: #f0f2f5;
+    background-color: #2c2c2c;
 }
 
 .container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 20px;
+    gap: 30px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -101,7 +101,8 @@ body {
     padding: 8px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.9);
+    background: #404040;
+    color: #e0e0e0;
 }
 
 .hidden {
@@ -112,14 +113,14 @@ button {
     padding: 8px 16px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
+    background: #404040;
+    color: #e0e0e0;
     cursor: pointer;
     transition: background 0.3s;
 }
 
 button:hover {
-    background: rgba(255, 255, 255, 1);
+    background: #505050;
 }
 
 .embed-buttons {
@@ -148,20 +149,30 @@ button:hover {
 }
 
 .customization-panel {
-    background: white;
+    background: #333333;
     padding: 20px;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 300px;
+    color: #e0e0e0;
+    position: sticky;
+    top: 20px;
 }
 
-.customization-section {
-    margin-bottom: 20px;
+.panel-section {
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #404040;
 }
 
-.customization-section h4 {
-    margin: 0 0 10px 0;
-    color: #333;
+.panel-section:last-child {
+    border-bottom: none;
+}
+
+.panel-section h4 {
+    margin: 0 0 15px 0;
+    color: #e0e0e0;
+    font-size: 1.1em;
 }
 
 .color-picker {
@@ -173,15 +184,16 @@ button:hover {
 
 .color-picker label {
     flex: 1;
-    color: #333;
+    color: #e0e0e0;
 }
 
 select, input[type="color"] {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
+    border: 1px solid #444;
     border-radius: 5px;
-    background: white;
+    background: #404040;
+    color: #e0e0e0;
 }
 
 input[type="color"] {
@@ -191,12 +203,12 @@ input[type="color"] {
 
 #apply-customization {
     width: 100%;
-    background: #6e8efb;
-    color: white;
+    background: #404040;
+    color: #e0e0e0;
     padding: 10px;
     font-weight: bold;
 }
 
 #apply-customization:hover {
-    background: #5d7de9;
+    background: #505050;
 } 

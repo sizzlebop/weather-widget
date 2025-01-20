@@ -17,9 +17,6 @@
                         <i class="material-icons">location_on</i>
                         <span id="location-name">Enter Location</span>
                     </div>
-                    <div class="settings-icon">
-                        <i class="material-icons" id="settings-toggle">settings</i>
-                    </div>
                 </div>
                 <div class="weather-body">
                     <div class="weather-animation" id="weather-animation"></div>
@@ -40,8 +37,11 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="location-input">
+        </div>
+
+        <div id="customization-panel" class="customization-panel">
+            <div class="panel-section">
+                <h4>Location</h4>
                 <div class="input-group">
                     <select id="location-type">
                         <option value="zip">Zip/Postal Code</option>
@@ -53,7 +53,6 @@
                             <option value="US">United States</option>
                             <option value="GB">United Kingdom</option>
                             <option value="CA">Canada</option>
-                            <!-- Add more countries as needed -->
                         </select>
                     </div>
                     <div id="coords-input" class="input-fields hidden">
@@ -64,29 +63,7 @@
                 </div>
             </div>
 
-            <div class="embed-buttons">
-                <button id="show-embed-code">Embed Code</button>
-                <button id="show-notion-link">Notion Link</button>
-            </div>
-
-            <div id="embed-preview" class="preview-panel hidden">
-                <div class="preview-content">
-                    <pre><code id="embed-code"></code></pre>
-                    <button id="copy-embed">Copy Code</button>
-                </div>
-            </div>
-
-            <div id="notion-preview" class="preview-panel hidden">
-                <div class="preview-content">
-                    <input type="text" id="notion-link" readonly>
-                    <button id="copy-notion">Copy Link</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="customization-panel" class="customization-panel hidden">
-            <h3>Customize Widget</h3>
-            <div class="customization-section">
+            <div class="panel-section">
                 <h4>Theme</h4>
                 <select id="theme-select">
                     <option value="light">Light</option>
@@ -95,7 +72,7 @@
                 </select>
             </div>
 
-            <div class="customization-section" id="custom-colors">
+            <div class="panel-section" id="custom-colors">
                 <h4>Custom Colors</h4>
                 <div class="color-picker">
                     <label>Background Start:</label>
@@ -111,7 +88,7 @@
                 </div>
             </div>
 
-            <div class="customization-section">
+            <div class="panel-section">
                 <h4>Font</h4>
                 <select id="font-select">
                     <option value="Roboto">Roboto</option>
@@ -121,7 +98,7 @@
                 </select>
             </div>
 
-            <div class="customization-section">
+            <div class="panel-section">
                 <h4>Size</h4>
                 <select id="size-select">
                     <option value="small">Small</option>
@@ -130,12 +107,34 @@
                 </select>
             </div>
 
-            <div class="customization-section">
+            <div class="panel-section">
                 <h4>Temperature Unit</h4>
                 <select id="unit-select">
                     <option value="celsius">Celsius</option>
                     <option value="fahrenheit">Fahrenheit</option>
                 </select>
+            </div>
+
+            <div class="panel-section">
+                <h4>Embed Options</h4>
+                <div class="embed-buttons">
+                    <button id="show-embed-code">Embed Code</button>
+                    <button id="show-notion-link">Embed Link</button>
+                </div>
+                
+                <div id="embed-preview" class="preview-panel hidden">
+                    <div class="preview-content">
+                        <pre><code id="embed-code"></code></pre>
+                        <button id="copy-embed">Copy Code</button>
+                    </div>
+                </div>
+
+                <div id="notion-preview" class="preview-panel hidden">
+                    <div class="preview-content">
+                        <input type="text" id="notion-link" readonly>
+                        <button id="copy-notion">Copy Link</button>
+                    </div>
+                </div>
             </div>
 
             <button id="apply-customization">Apply Changes</button>

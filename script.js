@@ -3,6 +3,7 @@ class WeatherWidget {
         this.apiKey = '805b142aaa4b0305c991f291c921bfa4';
         this.animations = new WeatherAnimations(document.getElementById('weather-animation'));
         this.setupEventListeners();
+        this.setupCustomColorPreview();
         this.loadCustomization();
     }
 
@@ -22,12 +23,6 @@ class WeatherWidget {
 
         // Get weather button
         document.getElementById('get-weather').addEventListener('click', () => this.fetchWeather());
-
-        // Settings toggle
-        document.getElementById('settings-toggle').addEventListener('click', () => {
-            const panel = document.getElementById('customization-panel');
-            panel.classList.toggle('hidden');
-        });
 
         // Embed code button
         document.getElementById('show-embed-code').addEventListener('click', () => {
@@ -131,8 +126,45 @@ class WeatherWidget {
             unit
         };
 
-        this.applyStyles(widget, customization);
-        this.saveCustomization(customization);
+        // Apply the styles immediately
+        if (customization.theme === 'custom') {
+            widget.style.background = `linear-gradient(135deg, ${customization.bgColorStart}, ${customization.bgColorEnd})`;
+            widget.style.color = customization.textColor;
+        } else {
+            widget.style.background = customization.theme === 'dark' 
+                ? 'linear-gradient(135deg, #2c3e50, #3498db)'
+                : 'linear-gradient(135deg, #6e8efb, #a777e3)';
+            widget.style.color = '#ffffff';
+        }
+
+        widget.style.fontFamily = `${customization.font}, sans-serif`;
+
+        // Apply size
+        const sizes = {
+            small: { width: '250px', padding: '15px' },
+            medium: { width: '300px', padding: '20px' },
+            large: { width: '350px', padding: '25px' }
+        };
+        widget.style.width = sizes[customization.size].width;
+        widget.style.padding = sizes[customization.size].padding;
+
+        // Apply temperature unit and convert if necessary
+        const tempElement = document.getElementById('temperature');
+        const unitElement = document.querySelector('.unit');
+        const currentTemp = parseFloat(tempElement.textContent);
+        
+        if (!isNaN(currentTemp)) {
+            if (customization.unit === 'fahrenheit' && unitElement.textContent === '°C') {
+                tempElement.textContent = Math.round((currentTemp * 9/5) + 32);
+                unitElement.textContent = '°F';
+            } else if (customization.unit === 'celsius' && unitElement.textContent === '°F') {
+                tempElement.textContent = Math.round((currentTemp - 32) * 5/9);
+                unitElement.textContent = '°C';
+            }
+        }
+
+        // Save the customization
+        localStorage.setItem('weatherWidgetCustomization', JSON.stringify(customization));
     }
 
     applyStyles(widget, customization) {
@@ -162,14 +194,12 @@ class WeatherWidget {
         temp.textContent = customization.unit === 'celsius' ? '°C' : '°F';
     }
 
-    saveCustomization(customization) {
-        localStorage.setItem('weatherWidgetCustomization', JSON.stringify(customization));
-    }
-
     loadCustomization() {
         const saved = localStorage.getItem('weatherWidgetCustomization');
         if (saved) {
             const customization = JSON.parse(saved);
+            
+            // Set the form values
             document.getElementById('theme-select').value = customization.theme;
             document.getElementById('bg-color-start').value = customization.bgColorStart;
             document.getElementById('bg-color-end').value = customization.bgColorEnd;
@@ -178,8 +208,50 @@ class WeatherWidget {
             document.getElementById('size-select').value = customization.size;
             document.getElementById('unit-select').value = customization.unit;
 
+            // Apply the saved customization
             this.applyStyles(document.getElementById('weather-widget'), customization);
+        } else {
+            // Set default values for color pickers
+            document.getElementById('bg-color-start').value = '#6e8efb';
+            document.getElementById('bg-color-end').value = '#a777e3';
+            document.getElementById('text-color').value = '#ffffff';
         }
+    }
+
+    // Add event listeners for real-time preview of custom colors
+    setupCustomColorPreview() {
+        const colorInputs = ['bg-color-start', 'bg-color-end', 'text-color'];
+        const widget = document.getElementById('weather-widget');
+        
+        colorInputs.forEach(id => {
+            document.getElementById(id).addEventListener('input', (e) => {
+                if (document.getElementById('theme-select').value === 'custom') {
+                    if (id === 'text-color') {
+                        widget.style.color = e.target.value;
+                    } else {
+                        const start = document.getElementById('bg-color-start').value;
+                        const end = document.getElementById('bg-color-end').value;
+                        widget.style.background = `linear-gradient(135deg, ${start}, ${end})`;
+                    }
+                }
+            });
+        });
+
+        // Add theme select change handler
+        document.getElementById('theme-select').addEventListener('change', (e) => {
+            const customColors = document.getElementById('custom-colors');
+            if (e.target.value === 'custom') {
+                customColors.style.display = 'block';
+            } else {
+                customColors.style.display = 'none';
+                if (e.target.value === 'dark') {
+                    widget.style.background = 'linear-gradient(135deg, #2c3e50, #3498db)';
+                } else {
+                    widget.style.background = 'linear-gradient(135deg, #6e8efb, #a777e3)';
+                }
+                widget.style.color = '#ffffff';
+            }
+        });
     }
 }
 

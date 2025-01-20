@@ -1,6 +1,11 @@
 class WeatherAnimations {
     constructor(container) {
         this.container = container;
+        // Set up container without background color
+        this.container.style.cssText = `
+            position: relative;
+            z-index: 2;
+        `;
     }
 
     clearAnimation() {
@@ -12,14 +17,18 @@ class WeatherAnimations {
         sun.style.cssText = `
             width: 60px;
             height: 60px;
-            background: #FFD700;
+            background: #FDB813 !important;
+            background-color: #FDB813 !important;
             border-radius: 50%;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            box-shadow: 0 0 50px #FFD700;
             animation: pulse 2s infinite;
+            z-index: 2;
+            color-scheme: light !important;
+            forced-color-adjust: none;
+            box-shadow: 0 0 20px #FDB813 !important;
         `;
 
         const keyframes = document.createElement('style');
@@ -52,12 +61,17 @@ class WeatherAnimations {
             drop.style.cssText = `
                 width: 2px;
                 height: 20px;
-                background: #fff;
+                background: #87CEEB !important;
+                background-color: #87CEEB !important;
                 position: absolute;
                 top: 0;
                 left: ${Math.random() * 100}%;
                 animation: rain 1s infinite linear;
                 animation-delay: ${Math.random() * 1}s;
+                z-index: 2;
+                color-scheme: light !important;
+                forced-color-adjust: none;
+                box-shadow: 0 0 5px #87CEEB !important;
             `;
             this.container.appendChild(drop);
         }
@@ -68,13 +82,18 @@ class WeatherAnimations {
         cloud.style.cssText = `
             width: 80px;
             height: 30px;
-            background: #fff;
+            background: #FFFFFF !important;
+            background-color: #FFFFFF !important;
             border-radius: 20px;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             animation: float 3s infinite ease-in-out;
+            z-index: 2;
+            color-scheme: light !important;
+            forced-color-adjust: none;
+            box-shadow: 0 0 15px #FFFFFF !important;
         `;
 
         const keyframes = document.createElement('style');
@@ -107,16 +126,77 @@ class WeatherAnimations {
             flake.style.cssText = `
                 width: 8px;
                 height: 8px;
-                background: #fff;
+                background: #FFFFFF !important;
+                background-color: #FFFFFF !important;
                 border-radius: 50%;
                 position: absolute;
                 top: 0;
                 left: ${Math.random() * 100}%;
                 animation: snow 3s infinite linear;
                 animation-delay: ${Math.random() * 3}s;
+                z-index: 2;
+                color-scheme: light !important;
+                forced-color-adjust: none;
+                box-shadow: 0 0 8px #FFFFFF !important;
             `;
             this.container.appendChild(flake);
         }
+    }
+
+    createFogAnimation() {
+        const fogLayers = 3;
+        const keyframes = document.createElement('style');
+        keyframes.textContent = `
+            @keyframes fog {
+                0% { transform: translateX(-100%); opacity: 0; }
+                50% { opacity: 0.5; }
+                100% { transform: translateX(100%); opacity: 0; }
+            }
+        `;
+
+        document.head.appendChild(keyframes);
+
+        for (let i = 0; i < fogLayers; i++) {
+            const fog = document.createElement('div');
+            fog.style.cssText = `
+                width: 200px;
+                height: 20px;
+                background: #FFFFFF !important;
+                background-color: #FFFFFF !important;
+                position: absolute;
+                top: ${30 + (i * 20)}%;
+                left: 0;
+                animation: fog ${4 + i}s infinite linear;
+                animation-delay: ${i * 1.5}s;
+                z-index: 2;
+                color-scheme: light !important;
+                forced-color-adjust: none;
+                box-shadow: 0 0 10px #FFFFFF !important;
+            `;
+            this.container.appendChild(fog);
+        }
+    }
+
+    createThunderstormAnimation() {
+        this.createRainyAnimation();
+
+        const lightning = document.createElement('div');
+        lightning.style.cssText = `
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #FFFFD4 !important;
+            background-color: #FFFFD4 !important;
+            animation: lightning 5s infinite;
+            animation-delay: ${Math.random() * 2}s;
+            z-index: 3;
+            color-scheme: light !important;
+            forced-color-adjust: none;
+            box-shadow: 0 0 25px #FFFFD4 !important;
+        `;
+        this.container.appendChild(lightning);
     }
 
     setAnimation(weatherCode) {
@@ -124,15 +204,15 @@ class WeatherAnimations {
         
         // Weather codes based on OpenWeather API
         if (weatherCode >= 200 && weatherCode < 300) { // Thunderstorm
-            this.createRainyAnimation();
+            this.createThunderstormAnimation();
         } else if (weatherCode >= 300 && weatherCode < 400) { // Drizzle
             this.createRainyAnimation();
         } else if (weatherCode >= 500 && weatherCode < 600) { // Rain
             this.createRainyAnimation();
         } else if (weatherCode >= 600 && weatherCode < 700) { // Snow
             this.createSnowAnimation();
-        } else if (weatherCode >= 700 && weatherCode < 800) { // Atmosphere
-            this.createCloudyAnimation();
+        } else if (weatherCode >= 700 && weatherCode < 800) { // Atmosphere (fog, mist, etc.)
+            this.createFogAnimation();
         } else if (weatherCode === 800) { // Clear
             this.createSunnyAnimation();
         } else if (weatherCode > 800) { // Clouds
