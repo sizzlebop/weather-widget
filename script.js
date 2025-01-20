@@ -343,6 +343,9 @@ class WeatherWidget {
         const unit = document.getElementById('unit-select').value;
 
         const widget = document.getElementById('weather-widget');
+        
+        // Set size data attribute
+        widget.setAttribute('data-size', size);
 
         // Apply theme background
         if (theme === 'custom') {

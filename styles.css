@@ -16,6 +16,7 @@ body {
     justify-content: center;
     align-items: flex-start;
     padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 /* Remove padding in embed mode */
@@ -81,6 +82,71 @@ body[data-embed="true"] .container {
     box-sizing: border-box;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+/* Size-specific styles */
+.weather-widget[data-size="small"] {
+    font-size: 14px;
+}
+
+.weather-widget[data-size="small"] .temperature {
+    font-size: 2.5em;
+}
+
+.weather-widget[data-size="small"] .weather-description {
+    font-size: 1em;
+}
+
+.weather-widget[data-size="small"] .material-icons {
+    font-size: 24px;
+}
+
+.weather-widget[data-size="small"] .weather-animation {
+    width: 120px;
+    height: 120px;
+}
+
+.weather-widget[data-size="medium"] {
+    font-size: 16px;
+}
+
+.weather-widget[data-size="medium"] .temperature {
+    font-size: 3em;
+}
+
+.weather-widget[data-size="medium"] .weather-description {
+    font-size: 1.2em;
+}
+
+.weather-widget[data-size="medium"] .material-icons {
+    font-size: 30px;
+}
+
+.weather-widget[data-size="medium"] .weather-animation {
+    width: 150px;
+    height: 150px;
+}
+
+.weather-widget[data-size="large"] {
+    font-size: 18px;
+}
+
+.weather-widget[data-size="large"] .temperature {
+    font-size: 3.5em;
+}
+
+.weather-widget[data-size="large"] .weather-description {
+    font-size: 1.4em;
+}
+
+.weather-widget[data-size="large"] .material-icons {
+    font-size: 36px;
+}
+
+.weather-widget[data-size="large"] .weather-animation {
+    width: 180px;
+    height: 180px;
 }
 
 /* Adjust widget in embed mode */
@@ -395,7 +461,7 @@ input[type="color"] {
     font-family: 'Material Icons' !important;
     font-weight: normal;
     font-style: normal;
-    font-size: 24px;
+    font-size: 30px;
     line-height: 1;
     letter-spacing: normal;
     text-transform: none;
@@ -403,23 +469,9 @@ input[type="color"] {
     word-wrap: normal;
     direction: ltr;
     -webkit-font-smoothing: antialiased;
+
 }
 
-/* Neon glow color picker */
-#neon-glow-section {
-    display: none;
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-#neon-glow-section.visible {
-    display: block;
-}
-
-#neon-glow-section .color-picker {
-    margin-bottom: 0;
-}
 
 /* Remove any generated content around temperature */
 .temperature::before,
@@ -438,36 +490,3 @@ input[type="color"] {
 #custom-colors {
     display: none;
 }
-
-/* Remove dashes for all animation types */
-.text-sparkle.temperature::after,
-.text-pulse.temperature::after,
-.text-rainbow.temperature::after,
-.text-neon.temperature::after,
-.text-sparkle .unit::after,
-.text-pulse .unit::after,
-.text-rainbow .unit::after,
-.text-neon .unit::after {
-    content: none !important;
-    display: none !important;
-}
-
-/* Ensure no borders or underlines for any animation type */
-.text-sparkle.temperature,
-.text-pulse.temperature,
-.text-rainbow.temperature,
-.text-neon.temperature,
-.text-sparkle #temperature,
-.text-pulse #temperature,
-.text-rainbow #temperature,
-.text-neon #temperature,
-.text-sparkle .unit,
-.text-pulse .unit,
-.text-rainbow .unit,
-.text-neon .unit {
-    border: none !important;
-    text-decoration: none !important;
-    border-bottom: none !important;
-    border-top: none !important;
-    line-height: 1;
-} 
