@@ -96,7 +96,8 @@ body {
 }
 
 .input-fields input,
-.input-fields select {
+.input-fields select,
+#api-key {
     flex: 1;
     padding: 8px;
     border: none;
@@ -235,4 +236,9 @@ input[type="color"] {
 
 #apply-customization:hover {
     background: #505050;
+}
+
+#save-api-key {
+    margin-top: 10px;
+    width: 100%;
 } 

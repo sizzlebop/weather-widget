@@ -1,13 +1,32 @@
 class WeatherWidget {
     constructor() {
-        this.apiKey = '805b142aaa4b0305c991f291c921bfa4';
+        this.apiKey = localStorage.getItem('openWeatherApiKey') || '805b142aaa4b0305c991f291c921bfa4';
         this.animations = new WeatherAnimations(document.getElementById('weather-animation'));
         this.setupEventListeners();
         this.setupCustomColorPreview();
         this.loadCustomization();
+        this.loadApiKey();
+        this.loadFromEmbed();
+    }
+
+    loadApiKey() {
+        const apiKeyInput = document.getElementById('api-key');
+        apiKeyInput.value = this.apiKey;
     }
 
     setupEventListeners() {
+        // API Key save button
+        document.getElementById('save-api-key').addEventListener('click', () => {
+            const apiKey = document.getElementById('api-key').value.trim();
+            if (apiKey) {
+                this.apiKey = apiKey;
+                localStorage.setItem('openWeatherApiKey', apiKey);
+                alert('API Key saved successfully!');
+            } else {
+                alert('Please enter a valid API Key');
+            }
+        });
+
         // Location type toggle
         document.getElementById('location-type').addEventListener('change', (e) => {
             const zipInput = document.getElementById('zip-input');
@@ -131,12 +150,105 @@ class WeatherWidget {
     }
 
     generateEmbedCode() {
-        const currentUrl = window.location.href;
-        return `<iframe src="${currentUrl}" width="350" height="500" frameborder="0"></iframe>`;
+        const customization = {
+            theme: document.getElementById('theme-select').value,
+            bgColorStart: document.getElementById('bg-color-start').value,
+            bgColorEnd: document.getElementById('bg-color-end').value,
+            textColor: document.getElementById('text-color').value,
+            font: document.getElementById('font-select').value,
+            size: document.getElementById('size-select').value,
+            unit: document.getElementById('unit-select').value,
+            apiKey: this.apiKey,
+            locationType: document.getElementById('location-type').value,
+            location: this.getLocationData()
+        };
+
+        const params = new URLSearchParams();
+        params.append('embed', 'true');
+        params.append('data', btoa(JSON.stringify(customization)));
+        const embedUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        return `<iframe src="${embedUrl}" width="350" height="500" frameborder="0"></iframe>`;
     }
 
     generateNotionLink() {
-        return window.location.href;
+        const customization = {
+            theme: document.getElementById('theme-select').value,
+            bgColorStart: document.getElementById('bg-color-start').value,
+            bgColorEnd: document.getElementById('bg-color-end').value,
+            textColor: document.getElementById('text-color').value,
+            font: document.getElementById('font-select').value,
+            size: document.getElementById('size-select').value,
+            unit: document.getElementById('unit-select').value,
+            apiKey: this.apiKey,
+            locationType: document.getElementById('location-type').value,
+            location: this.getLocationData()
+        };
+
+        const params = new URLSearchParams();
+        params.append('embed', 'true');
+        params.append('data', btoa(JSON.stringify(customization)));
+        return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    }
+
+    getLocationData() {
+        const locationType = document.getElementById('location-type').value;
+        if (locationType === 'zip') {
+            return {
+                zipCode: document.getElementById('zip-code').value,
+                countryCode: document.getElementById('country-code').value
+            };
+        } else {
+            return {
+                latitude: document.getElementById('latitude').value,
+                longitude: document.getElementById('longitude').value
+            };
+        }
+    }
+
+    loadFromEmbed() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('embed') === 'true' && params.get('data')) {
+            try {
+                const data = JSON.parse(atob(params.get('data')));
+                
+                // Apply customization
+                document.getElementById('theme-select').value = data.theme;
+                document.getElementById('bg-color-start').value = data.bgColorStart;
+                document.getElementById('bg-color-end').value = data.bgColorEnd;
+                document.getElementById('text-color').value = data.textColor;
+                document.getElementById('font-select').value = data.font;
+                document.getElementById('size-select').value = data.size;
+                document.getElementById('unit-select').value = data.unit;
+                
+                // Set API key
+                if (data.apiKey) {
+                    this.apiKey = data.apiKey;
+                    document.getElementById('api-key').value = data.apiKey;
+                }
+
+                // Set location
+                if (data.location) {
+                    document.getElementById('location-type').value = data.locationType;
+                    if (data.locationType === 'zip') {
+                        document.getElementById('zip-code').value = data.location.zipCode;
+                        document.getElementById('country-code').value = data.location.countryCode;
+                    } else {
+                        document.getElementById('latitude').value = data.location.latitude;
+                        document.getElementById('longitude').value = data.location.longitude;
+                    }
+                }
+
+                // Apply customization and fetch weather
+                this.applyCustomization();
+                this.fetchWeather();
+
+                // Hide customization panel in embed mode
+                document.getElementById('customization-panel').style.display = 'none';
+                document.querySelector('.embed-section').style.display = 'none';
+            } catch (error) {
+                console.error('Error loading embed data:', error);
+            }
+        }
     }
 
     applyCustomization() {
