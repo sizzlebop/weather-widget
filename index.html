@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Widget</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;500;600&family=Open+Sans:wght@300;400;600&family=Poppins:wght@300;400;500&family=Raleway:wght@300;400;500&family=Ubuntu:wght@300;400;500&family=Source+Sans+Pro:wght@300;400;600&family=Nunito:wght@300;400;600&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
@@ -15,7 +15,6 @@
                 <div class="weather-content">
                     <div class="weather-header">
                         <div class="location">
-                            <i class="material-icons">location_on</i>
                             <span id="location-name">Enter Location</span>
                         </div>
                     </div>
@@ -33,7 +32,8 @@
                             </div>
                             <div class="detail">
                                 <i class="material-icons">air</i>
-                                <span id="wind">-- m/s</span>
+                                <span id="wind">--</span>
+                                <span>m/s</span>
                             </div>
                         </div>
                     </div>
@@ -123,9 +123,15 @@
                 <h4>Font</h4>
                 <select id="font-select">
                     <option value="Roboto">Roboto</option>
-                    <option value="Arial">Arial</option>
-                    <option value="Helvetica">Helvetica</option>
+                    <option value="Lato">Lato</option>
+                    <option value="Montserrat">Montserrat</option>
                     <option value="Open Sans">Open Sans</option>
+                    <option value="Poppins">Poppins</option>
+                    <option value="Raleway">Raleway</option>
+                    <option value="Ubuntu">Ubuntu</option>
+                    <option value="Source Sans Pro">Source Sans Pro</option>
+                    <option value="Nunito">Nunito</option>
+                    <option value="Quicksand">Quicksand</option>
                 </select>
             </div>
 
@@ -145,8 +151,6 @@
                     <option value="fahrenheit">Fahrenheit</option>
                 </select>
             </div>
-
-            <button id="apply-customization">Apply Changes</button>
         </div>
     </div>
     <script src="weather-animations.js"></script>

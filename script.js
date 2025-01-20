@@ -27,6 +27,44 @@ class WeatherWidget {
             }
         });
 
+        // Theme change
+        document.getElementById('theme-select').addEventListener('change', () => {
+            this.applyCustomization();
+            this.saveCustomization();
+        });
+
+        // Color changes
+        ['bg-color-start', 'bg-color-end', 'text-color'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                this.applyCustomization();
+                this.saveCustomization();
+            });
+        });
+
+        // Font change
+        document.getElementById('font-select').addEventListener('change', () => {
+            const font = document.getElementById('font-select').value;
+            const widget = document.getElementById('weather-widget');
+            
+            // Apply font to the widget and all its children
+            const elements = widget.getElementsByTagName('*');
+            for (let element of elements) {
+                if (!(element instanceof SVGElement)) {
+                    element.style.setProperty('font-family', `${font}, sans-serif`, 'important');
+                }
+            }
+            widget.style.setProperty('font-family', `${font}, sans-serif`, 'important');
+            
+            // Save the customization
+            this.saveCustomization();
+        });
+
+        // Size change
+        document.getElementById('size-select').addEventListener('change', () => {
+            this.applyCustomization();
+            this.saveCustomization();
+        });
+
         // Location type toggle
         document.getElementById('location-type').addEventListener('change', (e) => {
             const zipInput = document.getElementById('zip-input');
@@ -55,6 +93,7 @@ class WeatherWidget {
                     unitElement.textContent = '°C';
                 }
             }
+            this.saveCustomization();
         });
 
         // Get weather button
@@ -94,9 +133,6 @@ class WeatherWidget {
             navigator.clipboard.writeText(link.value);
             alert('Notion link copied to clipboard!');
         });
-
-        // Customization apply button
-        document.getElementById('apply-customization').addEventListener('click', () => this.applyCustomization());
     }
 
     async fetchWeather() {
@@ -275,14 +311,32 @@ class WeatherWidget {
         if (customization.theme === 'custom') {
             widget.style.background = `linear-gradient(135deg, ${customization.bgColorStart}, ${customization.bgColorEnd})`;
             widget.style.color = customization.textColor;
+            // Apply text color to all text elements
+            widget.querySelectorAll('span, div:not(.weather-animation)').forEach(element => {
+                element.style.color = customization.textColor;
+            });
+            widget.querySelectorAll('i').forEach(element => {
+                element.style.color = customization.textColor;
+            });
         } else {
             widget.style.background = customization.theme === 'dark' 
                 ? 'linear-gradient(135deg, #2c3e50, #3498db)'
                 : 'linear-gradient(135deg, #6e8efb, #a777e3)';
             widget.style.color = '#ffffff';
+            // Reset text color for all elements in non-custom theme
+            widget.querySelectorAll('span, div:not(.weather-animation)').forEach(element => {
+                element.style.color = '#ffffff';
+            });
+            widget.querySelectorAll('i').forEach(element => {
+                element.style.color = '#ffffff';
+            });
         }
 
+        // Apply font to all text elements
         widget.style.fontFamily = `${customization.font}, sans-serif`;
+        widget.querySelectorAll('span, div:not(.weather-animation)').forEach(element => {
+            element.style.fontFamily = `${customization.font}, sans-serif`;
+        });
 
         // Apply size
         const sizes = {
@@ -309,58 +363,20 @@ class WeatherWidget {
         }
 
         // Save the customization
-        localStorage.setItem('weatherWidgetCustomization', JSON.stringify(customization));
+        this.saveCustomization();
     }
 
-    applyStyles(widget, customization) {
-        if (customization.theme === 'custom') {
-            widget.style.background = `linear-gradient(135deg, ${customization.bgColorStart}, ${customization.bgColorEnd})`;
-            widget.style.color = customization.textColor;
-        } else {
-            widget.style.background = customization.theme === 'dark' 
-                ? 'linear-gradient(135deg, #2c3e50, #3498db)'
-                : 'linear-gradient(135deg, #6e8efb, #a777e3)';
-            widget.style.color = '#ffffff';
-        }
-
-        widget.style.fontFamily = customization.font;
-
-        // Apply size
-        const sizes = {
-            small: { width: '250px', padding: '15px' },
-            medium: { width: '300px', padding: '20px' },
-            large: { width: '350px', padding: '25px' }
+    saveCustomization() {
+        const customization = {
+            theme: document.getElementById('theme-select').value,
+            bgColorStart: document.getElementById('bg-color-start').value,
+            bgColorEnd: document.getElementById('bg-color-end').value,
+            textColor: document.getElementById('text-color').value,
+            font: document.getElementById('font-select').value,
+            size: document.getElementById('size-select').value,
+            unit: document.getElementById('unit-select').value
         };
-        widget.style.width = sizes[customization.size].width;
-        widget.style.padding = sizes[customization.size].padding;
-
-        // Apply temperature unit
-        const temp = document.querySelector('.unit');
-        temp.textContent = customization.unit === 'celsius' ? '°C' : '°F';
-    }
-
-    loadCustomization() {
-        const saved = localStorage.getItem('weatherWidgetCustomization');
-        if (saved) {
-            const customization = JSON.parse(saved);
-            
-            // Set the form values
-            document.getElementById('theme-select').value = customization.theme;
-            document.getElementById('bg-color-start').value = customization.bgColorStart;
-            document.getElementById('bg-color-end').value = customization.bgColorEnd;
-            document.getElementById('text-color').value = customization.textColor;
-            document.getElementById('font-select').value = customization.font;
-            document.getElementById('size-select').value = customization.size;
-            document.getElementById('unit-select').value = customization.unit;
-
-            // Apply the saved customization
-            this.applyStyles(document.getElementById('weather-widget'), customization);
-        } else {
-            // Set default values for color pickers
-            document.getElementById('bg-color-start').value = '#6e8efb';
-            document.getElementById('bg-color-end').value = '#a777e3';
-            document.getElementById('text-color').value = '#ffffff';
-        }
+        localStorage.setItem('weatherWidgetCustomization', JSON.stringify(customization));
     }
 
     // Add event listeners for real-time preview of custom colors
