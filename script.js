@@ -31,21 +31,30 @@ class WeatherWidget {
         document.getElementById('text-animation').addEventListener('change', (e) => {
             const animation = e.target.value;
             const widget = document.getElementById('weather-widget');
-            const textElements = widget.querySelectorAll('.temperature, .weather-description, #location-name, #humidity, #wind');
+            const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
             const neonGlowSection = document.getElementById('neon-glow-section');
             
             // Show/hide neon glow color picker
             neonGlowSection.classList.toggle('visible', animation === 'neon');
             
-            // Remove all animation classes
-            const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse', 'text-glitch'];
+            // Remove all animation classes and styles
+            const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse'];
             textElements.forEach(element => {
                 element.classList.remove(...animationClasses);
-                element.removeAttribute('data-text');
+                element.style.textShadow = 'none'; // Explicitly remove text shadow
+                element.style.color = document.getElementById('text-color').value; // Reset to current text color
+                element.style.webkitTextFillColor = document.getElementById('text-color').value;
+                element.style.backgroundImage = 'none';
+                element.style.webkitBackgroundClip = 'unset';
+                element.style.backgroundClip = 'unset';
+                
                 if (animation !== 'none') {
                     element.classList.add(`text-${animation}`);
-                    if (animation === 'glitch') {
-                        element.setAttribute('data-text', element.textContent);
+                    if (animation === 'rainbow') {
+                        element.style.webkitTextFillColor = 'transparent';
+                        element.style.backgroundImage = 'linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
+                        element.style.webkitBackgroundClip = 'text';
+                        element.style.backgroundClip = 'text';
                     }
                 }
             });
@@ -235,13 +244,17 @@ class WeatherWidget {
             theme: document.getElementById('theme-select').value,
             bgColorStart: document.getElementById('bg-color-start').value,
             bgColorEnd: document.getElementById('bg-color-end').value,
+            bgColorSolid: document.getElementById('bg-color-solid').value,
+            bgType: document.getElementById('bg-type-select').value,
             textColor: document.getElementById('text-color').value,
             font: document.getElementById('font-select').value,
             size: document.getElementById('size-select').value,
             unit: document.getElementById('unit-select').value,
             apiKey: this.apiKey,
             locationType: document.getElementById('location-type').value,
-            location: this.getLocationData()
+            location: this.getLocationData(),
+            textAnimation: document.getElementById('text-animation').value,
+            neonGlowColor: document.getElementById('neon-glow-color').value
         };
 
         const params = new URLSearchParams();
@@ -249,16 +262,20 @@ class WeatherWidget {
         params.append('data', btoa(JSON.stringify(customization)));
         const embedUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
         
-        // Get current widget dimensions
-        const widget = document.getElementById('weather-widget');
-        const widgetWidth = widget.offsetWidth;
-        const widgetHeight = widget.offsetHeight;
+        // Get current widget dimensions based on size setting
+        const sizes = {
+            small: { width: 250, height: 300 },
+            medium: { width: 300, height: 350 },
+            large: { width: 350, height: 400 }
+        };
+        const size = document.getElementById('size-select').value;
+        const { width, height } = sizes[size];
         
         return `<!-- Weather Widget HTML -->
-<div id="weather-widget-container" style="width: ${widgetWidth}px; height: ${widgetHeight}px;">
+<div id="weather-widget-container" style="width: ${width}px;">
     <iframe 
         src="${embedUrl}" 
-        style="width: 100%; height: 100%; border: none; overflow: hidden; display: block;" 
+        style="width: 100%; height: ${height}px; border: none; overflow: hidden; display: block; border-radius: 20px;" 
         scrolling="no"
         loading="lazy"
         title="Weather Widget">
@@ -270,10 +287,6 @@ class WeatherWidget {
 #weather-widget-container {
     max-width: 100%;
     margin: 0 auto;
-    aspect-ratio: ${widgetWidth} / ${widgetHeight};
-}
-#weather-widget-container iframe {
-    border-radius: 20px;
 }
 </style>`;
     }
@@ -283,13 +296,17 @@ class WeatherWidget {
             theme: document.getElementById('theme-select').value,
             bgColorStart: document.getElementById('bg-color-start').value,
             bgColorEnd: document.getElementById('bg-color-end').value,
+            bgColorSolid: document.getElementById('bg-color-solid').value,
+            bgType: document.getElementById('bg-type-select').value,
             textColor: document.getElementById('text-color').value,
             font: document.getElementById('font-select').value,
             size: document.getElementById('size-select').value,
             unit: document.getElementById('unit-select').value,
             apiKey: this.apiKey,
             locationType: document.getElementById('location-type').value,
-            location: this.getLocationData()
+            location: this.getLocationData(),
+            textAnimation: document.getElementById('text-animation').value,
+            neonGlowColor: document.getElementById('neon-glow-color').value
         };
 
         const params = new URLSearchParams();
@@ -323,30 +340,21 @@ class WeatherWidget {
                 const data = JSON.parse(atob(params.get('data')));
                 
                 // Apply customization
-                document.getElementById('theme-select').value = data.theme;
-                document.getElementById('bg-color-start').value = data.bgColorStart;
-                document.getElementById('bg-color-end').value = data.bgColorEnd;
+                document.getElementById('theme-select').value = data.theme || 'light';
+                document.getElementById('bg-color-start').value = data.bgColorStart || '#6e8efb';
+                document.getElementById('bg-color-end').value = data.bgColorEnd || '#a777e3';
                 document.getElementById('bg-color-solid').value = data.bgColorSolid || '#ffffff';
                 document.getElementById('bg-type-select').value = data.bgType || 'gradient';
-                document.getElementById('text-color').value = data.textColor;
-                document.getElementById('font-select').value = data.font;
-                document.getElementById('size-select').value = data.size;
-                document.getElementById('unit-select').value = data.unit;
-                
-                // Show/hide custom colors section based on theme
-                const customColors = document.getElementById('custom-colors');
-                customColors.style.display = data.theme === 'custom' ? 'block' : 'none';
-                
-                // Show/hide gradient/solid color sections based on background type
-                const gradientColors = document.getElementById('gradient-colors');
-                const solidColor = document.getElementById('solid-color');
-                if (data.bgType === 'gradient') {
-                    gradientColors.style.display = 'block';
-                    solidColor.style.display = 'none';
-                } else {
-                    gradientColors.style.display = 'none';
-                    solidColor.style.display = 'block';
-                }
+                document.getElementById('text-color').value = data.textColor || '#ffffff';
+                document.getElementById('font-select').value = data.font || 'Roboto';
+                document.getElementById('size-select').value = data.size || 'medium';
+                document.getElementById('unit-select').value = data.unit || 'celsius';
+                document.getElementById('text-animation').value = data.textAnimation || 'none';
+                document.getElementById('neon-glow-color').value = data.neonGlowColor || '#ffffff';
+
+                // Set neon glow color CSS variable
+                const widget = document.getElementById('weather-widget');
+                widget.style.setProperty('--neon-glow-color', data.neonGlowColor || '#ffffff');
                 
                 // Set API key
                 if (data.apiKey) {
@@ -435,7 +443,7 @@ class WeatherWidget {
 
         // Apply text color and animations
         const textElements = widget.querySelectorAll('span:not(.material-icons), div:not(.weather-animation)');
-        const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse', 'text-glitch'];
+        const animationClasses = ['text-neon', 'text-rainbow', 'text-pulse'];
         
         textElements.forEach(element => {
             // First remove all animation classes and styles
@@ -445,15 +453,20 @@ class WeatherWidget {
             element.style.webkitBackgroundClip = 'unset';
             element.style.backgroundClip = 'unset';
             element.style.webkitTextFillColor = textColor;
+            element.style.textShadow = 'none'; // Explicitly remove text shadow
+            element.style.transform = 'none'; // Reset any transforms
             
             // Then apply the new animation if specified
             if (textAnimation !== 'none') {
                 element.classList.add(`text-${textAnimation}`);
-                if (textAnimation === 'glitch') {
-                    element.setAttribute('data-text', element.textContent);
-                }
                 if (textAnimation === 'rainbow') {
                     element.style.webkitTextFillColor = 'transparent';
+                    element.style.backgroundImage = 'linear-gradient(90deg, #ff0000, #ffa500, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)';
+                    element.style.webkitBackgroundClip = 'text';
+                    element.style.backgroundClip = 'text';
+                }
+                if (textAnimation === 'neon') {
+                    widget.style.setProperty('--neon-glow-color', neonGlowColor);
                 }
             }
         });
@@ -462,7 +475,10 @@ class WeatherWidget {
         const iconElements = widget.querySelectorAll('.material-icons');
         iconElements.forEach(icon => {
             icon.style.color = textColor;
-            icon.style.webkitTextFillColor = textColor; // Ensure icons don't get rainbow effect
+            icon.style.webkitTextFillColor = textColor;
+            icon.style.textShadow = 'none'; // Ensure icons don't get glow effect
+            icon.style.transform = 'none'; // Ensure icons don't pulse
+            icon.style.backgroundImage = 'none'; // Ensure icons don't get rainbow
         });
 
         // Apply font to all text elements except icons
